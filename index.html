@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumo P1 · AOC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: monitora explicando pra turma — direto, didático, nada de enrolação
+IDEA: a página se comporta como uma placa de circuito: tudo liga, desliga e responde
+PICTURE: um byte gigante de 8 chaves no topo, que vira número decimal ao vivo
+COLOUR and TYPE: branco, preto e vermelhão #ff4a1c; Sofia Sans Condensed 800 + Instrument Sans
+LAYOUT: faixa vermelha de abertura, seções em faixas alternadas, quiz completo no fim
+*/
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#120d0b);--ink:light-dark(#14110f,#f4ece7);--mute:light-dark(#5b544f,#b5a89f);
+--line:light-dark(#e4ddd8,#34261f);--card:light-dark(#f5f1ee,#1b1411);--acc:#ff4a1c;--acct:light-dark(#c02c07,#ff7550);
+--ok:light-dark(#0d7a50,#41d295);--hbg:light-dark(#ff4a1c,#1d130f);--hink:light-dark(#14110f,#ffeee7);
+--bon:light-dark(#14110f,#ff4a1c);--bonk:light-dark(#ff6a3f,#14110f);--off:light-dark(#b9b0aa,#5a4a42)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Instrument Sans",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}.in{max-width:1240px;margin:0 auto}
+.alt{background:var(--card)}
+h1,h2,h3,.disp{font-family:"Sofia Sans Condensed",sans-serif;font-weight:800;line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(32px,4.4vw,48px);margin-bottom:10px}h3{font-size:24px;margin:0 0 6px}
+.lead{color:var(--mute);font-size:17px;max-width:66ch;margin:0 0 24px}
+p{max-width:70ch}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn{min-height:44px;padding:0 18px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px}
+.seg button{min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-weight:600}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tip{background:color-mix(in srgb,var(--acc) 13%,var(--bg));border-radius:14px;padding:14px 18px;margin-top:18px;max-width:78ch}
+.tip b:first-child{color:var(--acct);display:block;font-family:"Sofia Sans Condensed";font-size:20px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:18px}
+.alt .card{background:var(--bg)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+ul.clean{margin:8px 0 0;padding-left:20px}ul.clean li{margin:4px 0}
+code,.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.95em}
+pre,.scroll{overflow-x:auto}.scroll a{flex:none}code{overflow-wrap:anywhere}
+table{border-collapse:collapse;width:100%}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:700}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;font-weight:700}.stack td:empty{display:none}}
+
+/* hero */
+.hero{background:var(--hbg);color:var(--hink)}
+.kick{font-weight:600;font-size:15px;margin:0 0 10px;opacity:.85}
+.hero h1{font-size:clamp(36px,5.6vw,60px);max-width:16ch}
+.hero .sub{font-size:17px;max-width:56ch;margin:12px 0 26px}
+.byte{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:end}
+.bits{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(4px,1vw,12px)}
+.bit{aspect-ratio:3/4.2;border:2px solid currentColor;border-radius:12px;background:transparent;color:var(--hink);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 2px;transition:background .15s,transform .1s}
+.bit:active{transform:scale(.96)}
+.bit small{font-size:13px;font-weight:700}
+.bit b{font-family:"Sofia Sans Condensed";font-weight:800;font-size:clamp(30px,6.5vw,76px);line-height:1}
+.bit span{font-size:13px;opacity:.8;white-space:nowrap}
+.bit.on{background:var(--bon);color:var(--bonk);border-color:var(--bon)}
+.read{text-align:right}
+.read .disp{font-size:clamp(72px,12vw,150px);line-height:.85;font-variant-numeric:tabular-nums}
+.read small{display:block;font-weight:600;font-size:15px}
+.sumline{margin:14px 0 0;font-weight:600;font-variant-numeric:tabular-nums;min-height:1.5em}
+.hin{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
+.hin input{width:130px;min-height:44px;border-radius:999px;border:2px solid var(--hink);background:transparent;color:var(--hink);padding:0 16px;font:600 16px "Instrument Sans"}
+.hin .btn{background:var(--hink);color:var(--hbg);border-color:var(--hink)}
+.hin .btn.ghost{background:transparent;color:var(--hink)}
+.herr{font-weight:700;min-height:1.4em;margin:8px 0 0}
+@media(max-width:700px){.byte{grid-template-columns:minmax(0,1fr)}.read{text-align:left;display:flex;align-items:baseline;gap:12px}}
+
+
+.hgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:clamp(24px,4vw,56px);align-items:center;min-height:min(78vh,640px)}
+.hero h1{font-size:clamp(44px,7vw,84px);max-width:13ch;line-height:.98}
+.by{font-size:19px;margin:14px 0 0}.by b{font-weight:700}
+a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.hero .hb{background:var(--hink);color:var(--hbg);border-color:var(--hink)}
+.hero .hb.ghost{background:transparent;color:var(--hink)}
+.chip{width:100%;max-width:420px;justify-self:center;--chip:light-dark(#14110f,#ff4a1c);--chipin:light-dark(#ff4a1c,#1d130f);--pin:light-dark(#14110f,#ff4a1c);filter:drop-shadow(0 18px 0 light-dark(rgba(20,17,15,.18),rgba(0,0,0,.35)))}
+@media(max-width:800px){.hgrid{grid-template-columns:minmax(0,1fr);min-height:0}.chip{max-width:240px;justify-self:start;order:-1}}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.toc a{display:block;text-decoration:none;color:var(--ink);background:var(--card);border-radius:16px;padding:16px 18px;border:2px solid transparent;transition:border-color .15s,transform .15s}
+.toc a:hover{border-color:var(--ink);transform:translateY(-2px)}
+.toc b{font:800 24px/1.1 "Sofia Sans Condensed";display:block}
+.toc span{display:block;color:var(--mute);font-size:15px;margin-top:4px}
+.toc em{font-style:normal;display:inline-block;margin-top:10px;font-size:13px;font-weight:700;background:var(--acc);color:#14110f;border-radius:99px;padding:2px 10px}
+.toc a.q{background:var(--ink);color:var(--bg)}.toc a.q span{color:inherit;opacity:.8}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px 28px;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
+.how p{margin:0;color:var(--mute)}
+.bytebox{background:var(--hbg);color:var(--hink);border-radius:22px;padding:clamp(18px,3vw,32px);margin-bottom:8px}
+/* nav */
+.nav{display:flex;gap:6px;padding:10px max(5vw,16px);border-bottom:1px solid var(--line);background:var(--bg);z-index:5}
+.nav a{color:var(--ink);text-decoration:none;font-weight:600;padding:10px 14px;border-radius:999px;white-space:nowrap}
+.nav a:hover{background:var(--card)}.nav a.q{background:var(--acc);color:#14110f}
+@media(min-width:900px){.nav{position:sticky;top:0;justify-content:center}}
+
+/* gerações */
+.tl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;position:relative;margin-bottom:18px}
+.tl button{border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 6px;min-height:84px;text-align:left}
+.tl button b{font-family:"Sofia Sans Condensed";font-size:clamp(26px,4vw,40px);display:block;line-height:1}
+.tl button span{font-size:13px;font-weight:600;display:block}
+.tl button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#14110f}
+.gp{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px}
+.gp .ico{width:84px;height:84px;color:var(--acct)}
+.per{font-weight:700;color:var(--acct)}
+@media(max-width:700px){.gp{grid-template-columns:minmax(0,1fr)}.tl button{padding:8px 4px;min-height:64px;text-align:center}}
+@media(max-width:520px){.tl button span{display:none}}
+
+/* binário */
+.volt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.volt div{border-radius:14px;padding:14px;border:2px solid var(--line)}
+.volt div:last-child{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.volt b{font-family:"Sofia Sans Condensed";font-size:40px;display:block;line-height:1}
+.add{font:700 clamp(22px,4vw,30px)/1.25 ui-monospace,Menlo,monospace;text-align:right;display:inline-block;padding:14px 20px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.add .r{border-top:3px solid var(--ink);color:var(--acct)}
+ol.flow{padding-left:22px}ol.flow li{margin:8px 0;padding:6px 10px;border-radius:10px;transition:background .2s}
+ol.flow li.cur{background:color-mix(in srgb,var(--acc) 16%,var(--bg))}
+
+/* portas */
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.figs{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.figs svg{width:100%;height:auto;display:block}
+.w{stroke:var(--off);stroke-width:4;fill:none;stroke-linecap:round}.w.live{stroke:var(--acc)}
+.body{fill:var(--bg);stroke:var(--ink);stroke-width:3.5}
+.lbl{font:700 15px "Instrument Sans";fill:var(--ink)}
+.sw{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.sw button{min-width:96px;min-height:56px;border-radius:14px;border:2px solid var(--ink);background:var(--bg);font:800 22px "Sofia Sans Condensed"}
+.sw button.on{background:var(--ink);color:var(--bg)}
+.outbig{font:800 52px/1 "Sofia Sans Condensed"}
+.tt td,.tt th{text-align:center;font-variant-numeric:tabular-nums}
+.tt tr.hl td{background:color-mix(in srgb,var(--acc) 18%,var(--bg));font-weight:700}
+@media(max-width:800px){.lab{grid-template-columns:minmax(0,1fr)}}
+
+/* desempenho */
+.pgrid{display:grid;grid-template-columns:44px repeat(12,minmax(32px,1fr));gap:3px;min-width:500px}
+.pgrid div{height:36px;border-radius:6px;display:grid;place-items:center;font-size:13px;font-weight:700}
+.pgrid .h{color:var(--mute);font-weight:600}
+.pgrid .c{background:var(--card)}.alt .pgrid .c{background:var(--bg)}
+.pgrid .fut{opacity:.18}.pgrid .now{outline:2px solid var(--ink);outline-offset:-2px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;margin:12px 0}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px}
+.pstat{font-weight:600;margin:10px 0}
+
+/* memória */
+.pyr{display:grid;gap:6px;justify-items:center;margin:8px 0 6px}
+.pyr button{border:0;border-radius:10px;min-height:52px;font-weight:700;color:#14110f}
+.pyr button[aria-pressed=true]{outline:3px solid var(--ink);outline-offset:2px}
+.axis{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);font-weight:600;gap:10px}
+
+/* barramentos */
+.lanes{display:grid;gap:4px;margin:12px 0}
+.lanes span{height:34px;border-radius:6px;display:grid;place-items:center;font:700 13px ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line)}
+.lanes span.one{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mini{display:grid;place-items:center;min-height:110px;border-radius:14px;background:var(--card);font:800 44px "Sofia Sans Condensed";margin:10px 0}
+.alt .mini{background:var(--bg)}
+.mini.scr-on{background:var(--ink);color:var(--bg)}
+
+/* quiz */
+.qwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@media(max-width:900px){.qwrap{grid-template-columns:minmax(0,1fr)}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chips button{min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-weight:600;font-size:14px}
+.chips button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.qcard{background:var(--bg);border:2px solid var(--ink);border-radius:20px;padding:clamp(18px,3vw,28px)}
+.qtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600;font-size:14px;color:var(--mute)}
+.tag{background:var(--card);color:var(--ink);border-radius:999px;padding:2px 10px}
+.bar{height:8px;border-radius:99px;background:var(--line);margin:10px 0 18px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.qq{font:800 clamp(24px,3.4vw,32px)/1.12 "Sofia Sans Condensed";margin:0 0 16px;text-wrap:balance}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;min-height:52px;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);font-size:16px}
+.opt .k{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center;font-weight:700;font-size:13px}
+.opt[aria-pressed=true]{border-color:var(--ink);background:var(--card)}
+.opt[aria-pressed=true] .k{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.opt.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--bg))}
+.opt.bad{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,var(--bg))}
+.opt:disabled{cursor:default}
+.tin{display:flex;gap:10px;flex-wrap:wrap}
+.tin input{flex:1 1 200px;min-height:52px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);padding:0 16px;font:700 20px ui-monospace,Menlo,monospace;letter-spacing:.06em}
+.tin input.bad{border-color:var(--acc)}.tin input.good{border-color:var(--ok)}
+.msg{font-weight:700;color:var(--acct);min-height:1.5em;margin:10px 0 0}.msg:empty{display:none}
+.ordbox{display:grid;gap:8px}
+.slots{display:grid;gap:6px;counter-reset:s}
+.slot{min-height:46px;border-radius:12px;border:2px dashed var(--line);display:flex;align-items:center;gap:10px;padding:0 12px;text-align:left;background:var(--bg)}
+.slot::before{counter-increment:s;content:counter(s);font-weight:800;color:var(--mute);width:16px}
+.slot.full{border-style:solid;border-color:var(--ink)}.slot.bad{border-color:var(--acc)}.slot.good{border-color:var(--ok)}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pool button{min-height:44px;padding:0 14px;border-radius:999px;border:2px solid var(--ink);background:var(--card);font-weight:600}
+.qt td,.qt th{text-align:center}
+.qt button{min-width:56px;min-height:44px;border-radius:10px;border:2px solid var(--ink);background:var(--bg);font:800 20px "Sofia Sans Condensed"}
+.qt tr.bad button{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--bg))}
+.qt tr.good button{border-color:var(--ok)}
+.fb{margin-top:16px;border-radius:14px;padding:14px 16px}
+.fb.ok{background:color-mix(in srgb,var(--ok) 14%,var(--bg))}
+.fb.no{background:color-mix(in srgb,var(--acc) 14%,var(--bg))}
+.fb b{font-family:"Sofia Sans Condensed";font-size:22px;display:block}
+.qnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:18px}
+.side{position:sticky;top:80px}
+.dots{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px;margin-top:10px}
+.dots button{min-height:40px;border-radius:10px;border:2px solid var(--line);background:var(--bg);font-weight:700;font-size:13px}
+.dots .ok1{background:var(--ok);border-color:var(--ok);color:var(--bg)}
+.dots .ok2{border-color:var(--ok);color:var(--ok)}
+.dots .err{background:var(--acc);border-color:var(--acc);color:#14110f}
+.dots .cur{outline:3px solid var(--ink);outline-offset:1px}
+.score{font:800 64px/1 "Sofia Sans Condensed"}
+.tbar{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 3.5em;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.tbar div{height:12px;background:var(--line);border-radius:99px;overflow:hidden}.tbar i{display:block;height:100%;background:var(--ok)}
+.tbar span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.keyl{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--mute);margin-top:10px}
+.keyl i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+footer{font-size:14px;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<header class="band hero">
+ <div class="in hgrid">
+  <div>
+   <p class="kick">Monitoria · Arquitetura e Organização de Computadores</p>
+   <h1>Resumo para a prova de Arquitetura</h1>
+   <p class="by">por <b>Ellen Monroe</b>, monitora da disciplina</p>
+   <p class="sub">Oi, turma! Juntei aqui tudo o que vocês viram em aula para a P1, do relé ao barramento, explicado do jeito mais direto que consegui. Cada assunto tem um resumo curto, um simulador para mexer e as dicas do que tem mais chance de cair. No fim, um banco de perguntas que corrige na hora.</p>
+   <div class="row"><a class="btn hb" href="#comecar">Começar o resumo</a><a class="btn hb ghost" href="#quiz">Ir direto para as perguntas</a></div>
+  </div>
+  <svg class="chip" viewBox="0 0 400 400" role="img" aria-label="Ilustração de um chip">
+   <g fill="var(--pin)"><rect x="70" y="20" width="14" height="40" rx="3"/><rect x="70" y="340" width="14" height="40" rx="3"/><rect x="20" y="70" width="40" height="14" rx="3"/><rect x="340" y="70" width="40" height="14" rx="3"/><rect x="104" y="20" width="14" height="40" rx="3"/><rect x="104" y="340" width="14" height="40" rx="3"/><rect x="20" y="104" width="40" height="14" rx="3"/><rect x="340" y="104" width="40" height="14" rx="3"/><rect x="138" y="20" width="14" height="40" rx="3"/><rect x="138" y="340" width="14" height="40" rx="3"/><rect x="20" y="138" width="40" height="14" rx="3"/><rect x="340" y="138" width="40" height="14" rx="3"/><rect x="172" y="20" width="14" height="40" rx="3"/><rect x="172" y="340" width="14" height="40" rx="3"/><rect x="20" y="172" width="40" height="14" rx="3"/><rect x="340" y="172" width="40" height="14" rx="3"/><rect x="206" y="20" width="14" height="40" rx="3"/><rect x="206" y="340" width="14" height="40" rx="3"/><rect x="20" y="206" width="40" height="14" rx="3"/><rect x="340" y="206" width="40" height="14" rx="3"/><rect x="240" y="20" width="14" height="40" rx="3"/><rect x="240" y="340" width="14" height="40" rx="3"/><rect x="20" y="240" width="40" height="14" rx="3"/><rect x="340" y="240" width="40" height="14" rx="3"/><rect x="274" y="20" width="14" height="40" rx="3"/><rect x="274" y="340" width="14" height="40" rx="3"/><rect x="20" y="274" width="40" height="14" rx="3"/><rect x="340" y="274" width="40" height="14" rx="3"/><rect x="308" y="20" width="14" height="40" rx="3"/><rect x="308" y="340" width="14" height="40" rx="3"/><rect x="20" y="308" width="40" height="14" rx="3"/><rect x="340" y="308" width="40" height="14" rx="3"/></g>
+   <rect x="52" y="52" width="296" height="296" rx="26" fill="var(--chip)"/>
+   <rect x="52" y="52" width="296" height="10" rx="5" fill="var(--chipin)" opacity=".35"/>
+   <rect x="96" y="96" width="208" height="208" rx="14" fill="none" stroke="var(--chipin)" stroke-width="3" stroke-dasharray="6 8"/>
+   <text x="200" y="232" text-anchor="middle" font-family="Sofia Sans Condensed,sans-serif" font-weight="800" font-size="118" fill="var(--chipin)">P1</text>
+   <text x="200" y="272" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-weight="700" font-size="17" fill="var(--chipin)" letter-spacing="2">01010000 00110001</text>
+   <circle cx="84" cy="84" r="9" fill="var(--chipin)"/>
+  </svg>
+ </div>
+</header>
+
+<section class="band" id="comecar"><div class="in">
+ <h2>O que você vai encontrar aqui</h2>
+ <p class="lead">Pode ler na ordem ou pular para o assunto que está mais difícil. Os que têm simulador você aprende mexendo.</p>
+ <div class="toc" id="toc"></div>
+ <div class="how">
+  <div><h3>Leia o resumo</h3><p>Cada seção vai direto ao ponto, com as analogias da aula e uma caixa “Na prova” com o que mais importa.</p></div>
+  <div><h3>Mexa nos simuladores</h3><p>Ligue bits, teste portas lógicas, rode o pipeline ciclo a ciclo. Ver funcionando ajuda a não esquecer.</p></div>
+  <div><h3>Teste-se no final</h3><p>São 38 perguntas. Errou? Vem uma dica e outra chance. Seu progresso fica salvo neste navegador.</p></div>
+ </div>
+</div></section>
+
+
+
+<nav class="nav scroll" aria-label="Seções">
+ <a href="#geracoes">Gerações</a><a href="#binario">Binário</a><a href="#portas">Portas lógicas</a><a href="#desempenho">Desempenho</a><a href="#memoria">Memória</a><a href="#cisc-risc">CISC × RISC</a><a href="#circuitos">Circuitos</a><a href="#barramentos">Barramentos</a><a href="#quiz" class="q">Perguntas</a>
+</nav>
+
+<section class="band" id="geracoes"><div class="in">
+ <h2>Cada geração é definida pelo componente da época</h2>
+ <p class="lead">A evolução é uma busca contínua por componentes menores, mais rápidos e com mais capacidade. Toque numa geração.</p>
+ <div class="tl" id="tl"></div>
+ <div class="card gp" id="gp"></div>
+</div></section>
+
+<section class="band alt" id="binario"><div class="in">
+ <h2>Binário porque eletricidade só precisa de dois estados</h2>
+ <p class="lead">Distinguir 1 V, 2 V, 3 V… sem nunca errar, com variação de energia e calor, seria um pesadelo. Saber se há tensão ou não é muito mais robusto.</p>
+ <div class="bytebox">
+  <h3>Experimente: cada bit é um transistor</h3>
+  <p style="margin:0 0 16px">Toque nos bits para ligar (1, ~5 V) e desligar (0, ~0 V). O número em decimal vai se somando: com os 8 ligados você chega a 255, o maior valor de 1 byte.</p>
+  <div class="byte">
+   <div>
+    <div class="bits" id="bits" role="group" aria-label="8 bits"></div>
+    <p class="sumline" id="sum"></p>
+   </div>
+   <div class="read" aria-live="polite"><small>decimal</small><span class="disp" id="dec">0</span></div>
+  </div>
+  <form class="hin" id="hform" novalidate>
+   <label for="hinp" style="font-weight:600">Ou digite um número</label>
+   <input id="hinp" inputmode="numeric" placeholder="0 a 255" autocomplete="off">
+   <button class="btn" type="submit">Converter</button>
+   <button class="btn ghost" type="button" id="hclr">Zerar</button>
+  </form>
+  <p class="herr" id="herr" role="alert"></p>
+ </div>
+ <div class="grid2" style="margin-top:24px">
+  <div>
+   <div class="volt">
+    <div><b>0</b>Falso / desligado<br>nível baixo, ~0 a 0,8 V</div>
+    <div><b>1</b>Verdadeiro / ligado<br>nível alto, ~2 a 5 V</div>
+   </div>
+   <h3>O transistor é uma chave automática</h3>
+   <p>Tem três terminais. O sinal no terminal de controle (<b>Gate</b>) decide se a corrente passa entre os outros dois:</p>
+   <ul class="clean">
+    <li><b>Bit 1 no controle</b> → a chave fecha e a eletricidade passa.</li>
+    <li><b>Bit 0 no controle</b> → a chave abre e a eletricidade é bloqueada.</li>
+   </ul>
+   <p>Um processador é uma pastilha de silício com <b>bilhões</b> desses transistores. Combinando transistores, nascem as <b>portas lógicas</b>; combinando portas, nascem somadores, comparadores (XOR, NOR) e circuitos que movem bits.</p>
+  </div>
+  <div class="card">
+   <h3>Do 13 + 10 até o 23 na tela</h3>
+   <div class="add" aria-label="1101 mais 1010 igual a 10111"><span>&nbsp;1101</span><br><span>+1010</span><br><span class="r">10111</span></div>
+   <ol class="flow" id="flow">
+    <li><b>Conversão:</b> você digita 13 e o sistema converte para <code>1101</code>.</li>
+    <li><b>Representação física:</b> <code>1101</code> entra no chip como pulsos: alta, alta, baixa, alta.</li>
+    <li><b>Processamento:</b> 13 + 10 (<code>1101 + 1010</code>) vai para circuitos somadores; os transistores abrem e fecham conforme os bits, seguindo a lógica das portas.</li>
+    <li><b>Resultado:</b> sai uma nova sequência de tensões, <code>10111</code>.</li>
+    <li><b>Conversão de volta:</b> <code>10111</code> vira 23 na sua tela.</li>
+   </ol>
+   <div class="row"><button class="btn" id="fnext">Próximo passo</button><span id="fstep" style="color:var(--mute);font-weight:600"></span></div>
+  </div>
+ </div>
+ <div class="tip"><b>Resumindo</b>O binário é a linguagem; os transistores são as “cordas vocais”; as portas lógicas são as palavras; os circuitos do chip são as frases. Tudo isso bilhões de vezes por segundo.</div>
+</div></section>
+
+<section class="band" id="portas"><div class="in">
+ <h2>Portas lógicas: AND, OR e NOT</h2>
+ <p class="lead">Elas implementam a Álgebra Booleana de George Boole (séc. XIX) e são os blocos de montar de todo o hardware, da ULA aos circuitos de controle. Escolha a porta e ligue as entradas.</p>
+ <div class="seg" id="gsel" role="group" aria-label="Porta"></div>
+ <div class="lab" style="margin-top:16px">
+  <div class="card">
+   <div class="sw" id="gsw"></div>
+   <p style="margin:6px 0 0;color:var(--mute);font-weight:600">Saída S</p>
+   <div class="outbig" id="gout" aria-live="polite">0</div>
+   <p id="glog"></p>
+   <table class="tt"><thead id="tth"></thead><tbody id="ttb"></tbody></table>
+   <p style="margin:12px 0 0"><b>Expressão:</b> <span id="gexp" class="mono"></span></p>
+  </div>
+  <div class="card figs">
+   <div><p style="margin:0;font-weight:700">Símbolo</p><svg id="gsym" viewBox="0 0 220 120" role="img" aria-label="Símbolo da porta"></svg></div>
+   <div><p style="margin:0;font-weight:700" id="ctitle">Circuito equivalente</p><svg id="gcir" viewBox="0 0 280 150" role="img" aria-label="Circuito com interruptores"></svg><p id="ccap" style="margin:4px 0 0;color:var(--mute);font-size:15px"></p></div>
+  </div>
+ </div>
+ <div class="tip"><b>Na prova</b>Decore a função, a tabela-verdade e o <b>símbolo</b> de cada porta (o professor disse que os símbolos caem). Série = AND, paralelo = OR. Pode cair: determinar a saída de um circuito simples ou montar a tabela-verdade de uma expressão.</div>
+</div></section>
+
+<section class="band alt" id="desempenho"><div class="in">
+ <h2>Como deixar o processador mais rápido</h2>
+ <p class="lead">Só aumentar a frequência (clock) gera muito calor e tem limites práticos. Então os engenheiros atacaram o gargalo de outras formas.</p>
+ <div class="grid3">
+  <div class="card"><h3>Clock</h3><p style="margin:0">Circuito que gera um sinal de frequência constante: a “marcação de ritmo” que sincroniza tudo. Toda tarefa é medida em ciclos (ler a cache pode levar ~10). Ciclo menor, frequência maior, mais operações por segundo.</p></div>
+  <div class="card"><h3>Arquitetura de von Neumann</h3><p style="margin:0">Proposta em 1945: CPU, memória e entrada/saída. O ponto-chave é o <b>programa armazenado</b>: instruções e dados no mesmo espaço de memória, então dá para reprogramar a máquina.</p></div>
+  <div class="card"><h3>Gargalo de von Neumann</h3><p style="margin:0">A CPU é muito rápida, a RAM é lenta, e há um único caminho entre elas. A CPU passa boa parte do tempo ociosa esperando instruções e dados chegarem.</p></div>
+ </div>
+ <h3 style="margin-top:28px">Solução 1 · Pipelining: etapas sobrepostas</h3>
+ <p style="margin-top:0">Cada instrução é dividida em 6 etapas. Enquanto a 1ª está executando, a 2ª já busca operando, a 3ª calcula endereço… Avance os ciclos e compare.</p>
+ <div class="row" style="margin-bottom:10px">
+  <div class="seg" id="pmode" role="group" aria-label="Modo"><button data-m="pipe" aria-pressed="true">Com pipeline</button><button data-m="seq" aria-pressed="false">Sem pipeline</button></div>
+  <button class="btn" id="pstep">Avançar ciclo</button><button class="btn ghost" id="pplay">Rodar</button><button class="btn ghost" id="preset">Zerar</button>
+ </div>
+ <div class="legend" id="plg"></div>
+ <div class="scroll"><div class="pgrid" id="pg"></div></div>
+ <p class="pstat" id="pst" aria-live="polite"></p>
+ <p style="margin:0;color:var(--mute)">Uma instrução continua levando 6 ciclos. Mas com o “cano” cheio, sai uma instrução pronta a quase todo ciclo: 6 instruções em 11 ciclos, contra 36 sem pipeline.</p>
+ <h3 style="margin-top:28px">Solução 2 · Superescalar: paralelismo de verdade</h3>
+ <p style="margin-top:0">Um passo além do pipeline: o processador tem <b>várias unidades de execução</b> (duas de soma, duas de multiplicação…). Se acha instruções que não dependem uma da outra, manda executar ao mesmo tempo. Isso é o <b>paralelismo no nível de instrução</b>: mais de uma instrução inteira por ciclo.</p>
+</div></section>
+
+<section class="band" id="memoria"><div class="in">
+ <h2>Hierarquia de memória: ninguém é rápido, grande e barato</h2>
+ <p class="lead">Por isso a memória é organizada em níveis. Toque num nível.</p>
+ <div class="grid2">
+  <div>
+   <div class="axis"><span>↑ menor, mais rápida, mais cara por bit</span></div>
+   <div class="pyr" id="pyr"></div>
+   <div class="axis"><span>↓ maior, mais lenta, mais barata por bit</span></div>
+  </div>
+  <div class="card" id="pyd" aria-live="polite"></div>
+ </div>
+ <div class="tip"><b>Na prova</b>Entenda o trade-off velocidade × custo × capacidade. A cache é a principal ferramenta para diminuir o gargalo de von Neumann: um intermediário rápido entre CPU e RAM.</div>
+</div></section>
+
+<section class="band alt" id="cisc-risc"><div class="in">
+ <h2>CISC × RISC: duas filosofias de projeto</h2>
+ <p class="lead">CISC é dar uma ordem a um robô especialista. RISC é dar várias ordens simples a um operário muito rápido.</p>
+ <div class="grid2">
+  <div class="card"><h3>CISC · Intel x86</h3>
+   <p style="margin-top:0">Instruções poderosas que fazem tarefas complexas de uma vez. Uma única instrução (no slide, <code>MULT A, B</code>) já carrega A da memória, carrega B, faz a operação e guarda o resultado.</p>
+   <p>O chip traduz isso pelo <b>microcódigo</b>, um “dicionário” interno de micro-passos: é a <b>microprogramação</b>.</p>
+   <ul class="clean"><li><b>Vantagem:</b> código mais curto e fácil para humanos.</li><li><b>Desvantagem:</b> hardware complexo; uma instrução leva vários ciclos.</li></ul>
+  </div>
+  <div class="card"><h3>RISC · ARM (celulares)</h3>
+   <p style="margin-top:0">A mesma tarefa vira 4 instruções simples, que o hardware executa direto, <b>sem microprogramação</b>:</p>
+   <pre style="margin:0;background:var(--card);padding:12px;border-radius:10px"><code>LOAD  R1, A    ; A → registrador 1
+LOAD  R2, B    ; B → registrador 2
+ADD   R1, R2   ; soma, guarda em R1
+STORE A, R1    ; resultado → memória</code></pre>
+   <ul class="clean"><li><b>Vantagem:</b> hardware simples, ~1 instrução por ciclo, ideal para pipelining, menos energia.</li><li><b>Desvantagem:</b> programa mais longo; o compilador faz o trabalho de quebrar a tarefa.</li></ul>
+  </div>
+ </div>
+ <table class="stack" style="margin-top:18px">
+  <thead><tr><th>Característica</th><th>CISC (Intel x86)</th><th>RISC (ARM)</th></tr></thead>
+  <tbody>
+   <tr><td>Tipo de instrução</td><td>Poucas, complexas e poderosas</td><td>Muitas, simples e rápidas</td></tr>
+   <tr><td>Tarefa</td><td>“Faça a operação” (1 instrução)</td><td>“Carregue, carregue, some, guarde” (4 instruções)</td></tr>
+   <tr><td>Trabalho do chip</td><td>Complexo: traduz em micro-passos</td><td>Simples: executa direto</td></tr>
+   <tr><td>Velocidade por instrução</td><td>Lenta (vários ciclos)</td><td>Rápida (geralmente 1 ciclo)</td></tr>
+   <tr><td>Foco</td><td>Facilitar a programação</td><td>Hardware rápido e eficiente</td></tr>
+  </tbody>
+ </table>
+ <div class="tip"><b>Na prova</b>A diferença central é a complexidade das instruções. Associe <b>CISC → microprogramação</b> e <b>RISC → melhor adaptação ao pipelining</b>.</div>
+</div></section>
+
+<section class="band" id="circuitos"><div class="in">
+ <h2>Circuitos com e sem memória</h2>
+ <p class="lead">Teste os dois: um sempre responde igual, o outro lembra do que aconteceu antes.</p>
+ <div class="grid2">
+  <div class="card"><h3>Combinacional · sem memória</h3>
+   <p style="margin-top:0">Como uma calculadora simples: a saída depende só das entradas de agora. 2 + 2 sempre dá 4. Serve para calcular e processar na hora.</p>
+   <div class="mini" id="calc" aria-live="polite">—</div>
+   <div class="row"><button class="btn" id="calcb">Apertar 2 + 2</button><span id="calcn" style="color:var(--mute);font-weight:600"></span></div>
+  </div>
+  <div class="card"><h3>Sequencial · com memória</h3>
+   <p style="margin-top:0">Como o botão da tela do celular: a mesma ação liga ou desliga, porque o circuito lembra do estado anterior. Serve para armazenar (RAM, registradores).</p>
+   <div class="mini" id="scr" aria-live="polite">tela desligada</div>
+   <div class="row"><button class="btn" id="scrb">Apertar o botão</button><span id="scrn" style="color:var(--mute);font-weight:600"></span></div>
+  </div>
+ </div>
+</div></section>
+
+<section class="band alt" id="barramentos"><div class="in">
+ <h2>Barramentos são as ruas do computador</h2>
+ <p class="lead">Fios e trilhas na placa-mãe por onde a informação circula. Sem eles, a fábrica (CPU) não pega matéria-prima no armazém (memória) nem entrega nas lojas (periféricos).</p>
+ <div class="grid3">
+  <div class="card"><h3>Dados · rodovia de carga</h3><p style="margin:0">Leva os dados de verdade (os bits). <b>Mão dupla:</b> a CPU lê e escreve na memória.</p></div>
+  <div class="card"><h3>Endereços · ruas com CEP</h3><p style="margin:0">Não leva o dado, leva <b>onde</b> ele está (“corredor 5, prateleira 3”). É o GPS. Geralmente <b>mão única</b>: a CPU define e envia.</p></div>
+  <div class="card"><h3>Controle · semáforos</h3><p style="margin:0">Sinais de controle e sincronização: “quero LER”, “vou ESCREVER”, “o dado está pronto”, “espere, está ocupado”. Evita colisões.</p></div>
+ </div>
+ <h3 style="margin-top:28px">Largura = número de pistas</h3>
+ <p style="margin-top:0">É quantos bits o barramento transporta de uma vez. Mais pistas, mais dados ao mesmo tempo, mais desempenho.</p>
+ <div class="seg" id="bw" role="group" aria-label="Largura do barramento"></div>
+ <div class="lanes" id="lanes"></div>
+ <p class="pstat" id="bst" aria-live="polite"></p>
+</div></section>
+
+<section class="band" id="quiz"><div class="in">
+ <h2>Perguntas e respostas</h2>
+ <p class="lead">38 questões tiradas do resumo. Errou? Você ganha uma dica e mais uma chance antes de ver a resposta. Seu progresso fica salvo neste navegador.</p>
+ <div class="chips" id="chips" role="group" aria-label="Filtrar por assunto"></div>
+ <div class="qwrap">
+  <div id="qbox"></div>
+  <aside class="card side">
+   <h3>Mapa das questões</h3>
+   <p style="margin:0;color:var(--mute);font-size:15px" id="qsum"></p>
+   <div class="dots" id="dots"></div>
+   <div class="keyl"><span><i style="background:var(--ok)"></i>de primeira</span><span><i style="border:2px solid var(--ok)"></i>na 2ª tentativa</span><span><i style="background:var(--acc)"></i>errou</span></div>
+   <div class="row" style="margin-top:14px"><button class="btn ghost" id="qreset">Apagar progresso</button></div>
+  </aside>
+ </div>
+</div></section>
+
+<footer class="band alt"><div class="in">Material da monitoria, feito a partir do resumo da P1. Bons estudos!</div></footer>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+
+const TOC=[['#geracoes','Gerações','Do relé ao VLSI: o componente que define cada época.','linha do tempo'],['#binario','Binário e transistor','Por que tudo vira 0 e 1, e como 13 + 10 vira 23.','simulador'],['#portas','Portas lógicas','AND, OR e NOT: tabela-verdade, símbolo e circuito.','simulador'],['#desempenho','Desempenho','Clock, gargalo de von Neumann, pipeline e superescalar.','simulador'],['#memoria','Hierarquia de memória','Registradores, cache, RAM e disco: o trade-off.',''],['#cisc-risc','CISC × RISC','Duas filosofias de processador, lado a lado.',''],['#circuitos','Circuitos','Combinacional (sem memória) × sequencial (com memória).','simulador'],['#barramentos','Barramentos','Dados, endereços e controle: as ruas do computador.','simulador'],['#quiz','Perguntas e respostas','38 questões com correção, dica e resultado por assunto.','quiz']];
+$('#toc').innerHTML=TOC.map(([h,t,d,g])=>`<a href="${h}" class="${h==='#quiz'?'q':''}"><b>${t}</b><span>${d}</span>${g?`<em>${g}</em>`:''}</a>`).join('');
+/* ---------- byte ---------- */
+const WT=[128,64,32,16,8,4,2,1];let bits=[0,1,1,0,0,1,0,0];
+function drawByte(){
+ $('#bits').innerHTML=WT.map((w,i)=>`<button class="bit${bits[i]?' on':''}" data-i="${i}" aria-pressed="${!!bits[i]}" aria-label="bit de peso ${w}, ${bits[i]?'ligado':'desligado'}"><small>${w}</small><b>${bits[i]}</b><span>${bits[i]?'5 V':'0 V'}</span></button>`).join('');
+ const v=bits.reduce((s,b,i)=>s+b*WT[i],0);$('#dec').textContent=v;
+ const p=WT.filter((w,i)=>bits[i]);
+ $('#sum').textContent=(p.length?p.join(' + ')+' = '+v:'nenhum bit ligado = 0')+'  ·  binário '+bits.join('');
+}
+$('#bits').addEventListener('click',e=>{const b=e.target.closest('.bit');if(!b)return;const i=+b.dataset.i;bits[i]=1-bits[i];$('#herr').textContent='';drawByte();document.querySelector(`.bit[data-i="${i}"]`).focus()});
+$('#hform').addEventListener('submit',e=>{e.preventDefault();const v=$('#hinp').value.trim();
+ if(v===''){$('#herr').textContent='Digite um número primeiro.';return}
+ if(!/^\d+$/.test(v)){$('#herr').textContent='Use só algarismos de 0 a 9 (sem vírgula ou sinal).';return}
+ const n=+v;if(n>255){$('#herr').textContent=`${n} não cabe em 8 bits: o máximo é 255 (todos ligados).`;return}
+ $('#herr').textContent='';bits=WT.map(w=>(n&w)?1:0);drawByte()});
+$('#hclr').addEventListener('click',()=>{bits=[0,0,0,0,0,0,0,0];$('#hinp').value='';$('#herr').textContent='';drawByte()});
+drawByte();
+
+/* ---------- gerações ---------- */
+const ICO=[
+ '<circle cx="42" cy="42" r="22" fill="none" stroke="currentColor" stroke-width="12" stroke-dasharray="8 6"/><circle cx="42" cy="42" r="12" fill="none" stroke="currentColor" stroke-width="4"/>',
+ '<path d="M24 70V34a18 18 0 0 1 36 0v36z" fill="none" stroke="currentColor" stroke-width="4"/><path d="M34 70V44l8 10 8-10v26" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 70v10M42 70v10M54 70v10" stroke="currentColor" stroke-width="4"/>',
+ '<path d="M22 46a20 20 0 0 1 40 0v8H22z" fill="currentColor"/><path d="M30 54v24M42 54v24M54 54v24" stroke="currentColor" stroke-width="4"/>',
+ '<rect x="22" y="22" width="40" height="40" rx="4" fill="currentColor"/><path d="M30 22v-8M42 22v-8M54 22v-8M30 62v8M42 62v8M54 62v8M22 30h-8M22 42h-8M22 54h-8M62 30h8M62 42h8M62 54h8" stroke="currentColor" stroke-width="4"/>',
+ '<rect x="14" y="14" width="56" height="56" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>'+[0,1,2,3].map(r=>[0,1,2,3].map(c=>`<rect x="${21+c*11}" y="${21+r*11}" width="9" height="9" fill="currentColor"/>`).join('')).join('')
+];
+const GEN=[
+ {n:'Mecânicos',per:'até 1945',tec:'Engrenagens e relés eletromecânicos',car:'Eram máquinas, não computadores eletrônicos. O relé é um interruptor controlado por um sinal de baixa potência: um pequeno impulso liga ou desliga um circuito maior.',ex:['<b>Charles Babbage</b> (1792–1871), o “Pai do Computador”: projetou a Difference Engine (tarefa específica) e a Analytical Engine, que já tinha as 4 partes de um computador moderno: armazenamento, computação, entrada e saída.','<b>Ada Lovelace</b> (1815–1852): a “Primeira Programadora”, pelo trabalho com a Analytical Engine.','<b>MARK I</b> (1944): usava relés e tinha ciclo de relógio lento, de 0,3 segundo.'],tip:'Babbage e Lovelace são da era mecânica, antes dos componentes eletrônicos. A grande limitação era a velocidade, presa às partes móveis.'},
+ {n:'Válvulas',per:'1945 – 1955',tec:'Válvula a vácuo (Sir John Ambrose Fleming, 1904)',car:'Os primeiros computadores eletrônicos: enormes, pesados, gastavam muita energia e esquentavam absurdamente. Programação por chaves e plugs.',ex:['<b>Colossus</b> (1943): o primeiro computador eletrônico, feito em segredo pelos britânicos para decifrar códigos alemães; só revelado nos anos 70.','<b>ENIAC</b> (1946): por muito tempo considerado o primeiro. 18.000 válvulas, 30 toneladas, 5 KHz.','<b>EDVAC</b> (1949): o primeiro com a arquitetura de von Neumann: o processador busca instruções na memória e manipula dados que também estão nela.'],tip:'Palavra-chave: VÁLVULA. Pense em “gigante, quente e programado por fios”. E entenda a arquitetura de von Neumann: programa e dados na mesma memória.'},
+ {n:'Transistor',per:'1955 – 1964',tec:'Transistor (1947): interruptor eletrônico que controla o fluxo de corrente',car:'Muito menor, mais barato, mais rápido e gastando bem menos energia que a válvula. Computadores mais acessíveis e confiáveis.',ex:['<b>IBM 1620</b>, o primeiro computador da USP.','<b>DEC PDP-1</b>.'],tip:'Palavra-chave: TRANSISTOR. Marca o início da popularização em universidades e grandes empresas.'},
+ {n:'Circuito integrado',per:'1964 – 1980',tec:'Circuito Integrado (chip), de Jack Kilby, 1958: transistores, resistores e capacitores numa só pastilha de silício',car:'Salto enorme em miniaturização e poder. Surgem os minicomputadores e as “famílias”, em que modelos diferentes rodam o mesmo software.',ex:['<b>IBM-360</b> (1964): a primeira família de computadores.'],tip:'Associe a 3ª geração ao CHIP: muitos transistores num espaço minúsculo, mais desempenho e linhas de produtos compatíveis.'},
+ {n:'VLSI',per:'1980 – hoje',tec:'VLSI (Very Large Scale Integration): milhões, hoje bilhões, de transistores num único chip',car:'Permitiu os microprocessadores e os computadores pessoais. O desempenho cresce exponencialmente, como descreve a Lei de Moore: o número de transistores num chip dobra a cada ~18 meses.',ex:['Processadores <b>Intel</b> e <b>Motorola</b>, que deram origem aos computadores pessoais.'],tip:'VLSI e microprocessador são os conceitos centrais. A Lei de Moore é o motor dessa evolução: é a geração que está no seu bolso.'}
+];
+let gi=0;
+function drawGen(){
+ $('#tl').innerHTML=GEN.map((g,i)=>`<button data-i="${i}" aria-pressed="${i===gi}" aria-label="${i===0?'Geração 0':i+'ª geração'}: ${g.n}"><b>${i}ª</b><span>${g.n}</span></button>`).join('').replace('<b>0ª</b>','<b>G0</b>');
+ const g=GEN[gi];
+ $('#gp').innerHTML=`<div><svg class="ico" viewBox="0 0 84 84" aria-hidden="true">${ICO[gi]}</svg><p class="per" style="margin:8px 0 0">${gi===0?'Geração 0':gi+'ª geração'} · ${g.per}</p><h3 style="margin-top:4px">${g.tec}</h3><p style="margin:0">${g.car}</p></div><div><b>Exemplos e nomes</b><ul class="clean">${g.ex.map(x=>`<li>${x}</li>`).join('')}</ul><div class="tip" style="margin-top:14px"><b>Na prova</b>${g.tip}</div></div>`;
+}
+$('#tl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;gi=+b.dataset.i;drawGen();$(`#tl button[data-i="${gi}"]`).focus()});
+drawGen();
+
+/* ---------- fluxo 13+10 ---------- */
+let fs=-1;const fl=[...document.querySelectorAll('#flow li')];
+function drawFlow(){fl.forEach((l,i)=>l.classList.toggle('cur',i===fs));$('#fstep').textContent=fs<0?'':`passo ${fs+1} de 5`;$('#fnext').textContent=fs>=4?'Recomeçar':'Próximo passo'}
+$('#fnext').addEventListener('click',()=>{fs=fs>=4?-1:fs+1;drawFlow()});drawFlow();
+
+/* ---------- portas ---------- */
+const GT={
+ AND:{f:(a,b)=>a&b,exp:'S = A · B',log:'Saída 1 só quando TODAS as entradas são 1. “Para ir à praia preciso de protetor E de dinheiro.”',cap:'Dois interruptores em SÉRIE: a lâmpada só acende se A E B estiverem fechados.'},
+ OR:{f:(a,b)=>a|b,exp:'S = A + B',log:'Saída 1 se PELO MENOS UMA entrada for 1. “No almoço quero arroz OU batata frita.”',cap:'Dois interruptores em PARALELO: a corrente tem dois caminhos; basta A OU B fechado.'},
+ NOT:{f:a=>1-a,exp:'S = Ā',log:'Inverte a entrada: 1 vira 0 e 0 vira 1. É a mais simples.',cap:'Interruptor ligado ao lado da lâmpada: fechado (1), ele desvia a corrente e a lâmpada apaga.'}
+};
+let gate='AND',A=0,B=0;
+const L=(x1,y1,x2,y2,on)=>`<path class="w${on?' live':''}" d="M${x1} ${y1}L${x2} ${y2}"/>`;
+function sym(){
+ const s=GT[gate].f(A,B);let h='';
+ if(gate==='NOT'){h+=L(14,60,60,60,A)+L(142,60,198,60,s)+`<path class="body" d="M60 25L130 60L60 95Z"/><circle class="body" cx="136" cy="60" r="6"/><text class="lbl" x="2" y="54">A</text>`}
+ else{const x=gate==='AND'?60:66,ox=gate==='AND'?140:148;
+  h+=L(14,40,x,40,A)+L(14,80,x,80,B)+L(ox,60,198,60,s);
+  h+=gate==='AND'?'<path class="body" d="M60 20H100A40 40 0 0 1 100 100H60Z"/>':'<path class="body" d="M52 20Q100 20 148 60Q100 100 52 100Q72 60 52 20Z"/>';
+  h+='<text class="lbl" x="2" y="34">A</text><text class="lbl" x="2" y="74">B</text>'}
+ h+=`<circle cx="205" cy="60" r="9" fill="${s?'var(--acc)':'var(--bg)'}" stroke="var(--ink)" stroke-width="3"/><text class="lbl" x="196" y="40">S</text>`;
+ $('#gsym').innerHTML=h;
+}
+function swH(x1,y,x2,closed,lab,on){return `<circle cx="${x1}" cy="${y}" r="4" fill="var(--ink)"/><circle cx="${x2}" cy="${y}" r="4" fill="var(--ink)"/><path class="w${on?' live':''}" style="stroke:${closed?'':'var(--ink)'}" d="M${x1} ${y}L${closed?x2:x2-8} ${closed?y:y-20}"/><text class="lbl" x="${(x1+x2)/2-5}" y="${y+24}">${lab}</text>`}
+function lamp(on){return `<circle cx="250" cy="75" r="16" fill="${on?'var(--acc)':'var(--bg)'}" stroke="var(--ink)" stroke-width="3"/><path d="M241 66l18 18M259 66l-18 18" stroke="var(--ink)" stroke-width="2"/>${on?'<circle cx="250" cy="75" r="26" fill="none" stroke="var(--acc)" stroke-width="2" opacity=".5"/>':''}`}
+function cir(){
+ const s=GT[gate].f(A,B),o=gate==='NOT'?1:s;let h='';
+ h+=`<path d="M10 66h28M16 80h16" stroke="var(--ink)" stroke-width="4"/><text class="lbl" x="40" y="70">+</text>`;
+ h+=L(24,66,24,30,o)+L(24,80,24,120,o)+L(24,120,250,120,o)+L(250,30,250,59,o)+L(250,91,250,120,o);
+ if(gate==='AND'){h+=L(24,30,80,30,o)+swH(80,30,120,A,'A',o)+L(120,30,160,30,o)+swH(160,30,200,B,'B',o)+L(200,30,250,30,o)}
+ else if(gate==='OR'){h+=L(24,30,70,30,o)+L(70,30,70,80,o)+L(70,30,105,30,o)+L(70,80,105,80,o)+swH(105,30,145,A,'A',o)+swH(105,80,145,B,'B',o)+L(145,30,200,30,o)+L(145,80,200,80,o)+L(200,30,200,80,o)+L(200,30,250,30,o)}
+ else{const on=1;h+=L(24,30,70,30,on)+`<path class="w live" d="M70 30l6-10 10 20 10-20 10 20 10-20 6 10"/>`+L(122,30,250,30,on)+L(180,30,180,58,on)+`<circle cx="180" cy="58" r="4" fill="var(--ink)"/><circle cx="180" cy="96" r="4" fill="var(--ink)"/><path class="w" style="stroke:var(--ink)" d="M180 58L${A?180:160} ${A?96:90}"/>`+L(180,96,180,120,on)+`<text class="lbl" x="190" y="82">A</text><text class="lbl" x="74" y="58" style="font-size:13px">resistor</text>`}
+ h+=lamp(s);
+ $('#gcir').innerHTML=h;$('#ccap').textContent=GT[gate].cap;
+}
+function drawGate(){
+ const g=GT[gate],s=g.f(A,B);
+ $('#gsel').innerHTML=Object.keys(GT).map(k=>`<button data-g="${k}" aria-pressed="${k===gate}">${k} · ${k==='AND'?'E':k==='OR'?'OU':'NÃO'}</button>`).join('');
+ $('#gsw').innerHTML=`<button data-s="A" class="${A?'on':''}" aria-pressed="${!!A}">A = ${A}</button>`+(gate==='NOT'?'':`<button data-s="B" class="${B?'on':''}" aria-pressed="${!!B}">B = ${B}</button>`);
+ $('#gout').textContent=s;$('#gout').style.color=s?'var(--acct)':'';
+ $('#glog').textContent=g.log;$('#gexp').textContent=g.exp;
+ const rows=gate==='NOT'?[[0],[1]]:[[0,0],[0,1],[1,0],[1,1]];
+ $('#tth').innerHTML=`<tr>${gate==='NOT'?'<th>A</th>':'<th>A</th><th>B</th>'}<th>S</th></tr>`;
+ $('#ttb').innerHTML=rows.map(r=>{const hl=r[0]===A&&(gate==='NOT'||r[1]===B);return `<tr class="${hl?'hl':''}">${r.map(v=>`<td>${v}</td>`).join('')}<td>${g.f(r[0],r[1])}</td></tr>`}).join('');
+ sym();cir();
+}
+$('#gsel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;gate=b.dataset.g;drawGate()});
+$('#gsw').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s==='A')A=1-A;else B=1-B;drawGate();$(`#gsw [data-s="${b.dataset.s}"]`).focus()});
+drawGate();
+
+/* ---------- pipeline ---------- */
+const ST=['BI','DI','EO','BO','EX','ER'],STN=['Busca da instrução','Decodificação','Endereço do operando','Busca do operando','Execução','Escrita do resultado'];
+const stc=i=>`color-mix(in srgb,var(--acc) ${22+i*13}%,var(--bg))`;
+let pc=0,pm='pipe',ptm=null;
+$('#plg').innerHTML=ST.map((s,i)=>`<span><i style="background:${stc(i)}"></i><b>${s}</b> ${STN[i]}</span>`).join('');
+const sAt=(i,c)=>{const s=pm==='pipe'?c-1-i:c-1-6*i;return s>=0&&s<6?s:-1};
+function drawPipe(){
+ let h='<div class="h">ciclo</div>';for(let c=1;c<=12;c++)h+=`<div class="h${c===pc?' now':''}">${c}</div>`;
+ for(let i=0;i<6;i++){h+=`<div class="h">I${i+1}</div>`;for(let c=1;c<=12;c++){const s=sAt(i,c);h+=s<0?`<div class="c${c>pc?' fut':''}"></div>`:`<div style="background:${stc(s)}" class="${c>pc?'fut':''}${c===pc?' now':''}">${ST[s]}</div>`}}
+ $('#pg').innerHTML=h;
+ const done=pm==='pipe'?Math.max(0,Math.min(6,pc-5)):Math.floor(pc/6);
+ $('#pst').textContent=pc===0?'Ciclo 0: nada começou ainda.':`Ciclo ${pc}: ${done} ${done===1?'instrução concluída':'instruções concluídas'}${pm==='seq'&&pc===12?' (as outras 4 ainda esperam: no total seriam 36 ciclos)':''}${pm==='pipe'&&pc>=11?' — todas as 6 em 11 ciclos!':''}`;
+ $('#pplay').textContent=ptm?'Pausar':'Rodar';
+}
+function stepP(){if(pc>=12){stopP();return}pc++;drawPipe();if(pc>=12)stopP()}
+function stopP(){clearInterval(ptm);ptm=null;drawPipe()}
+$('#pstep').addEventListener('click',()=>{stopP();stepP()});
+$('#pplay').addEventListener('click',()=>{if(ptm){stopP();return}if(pc>=12)pc=0;ptm=setInterval(stepP,matchMedia('(prefers-reduced-motion:reduce)').matches?1200:650);drawPipe()});
+$('#preset').addEventListener('click',()=>{stopP();pc=0;drawPipe()});
+$('#pmode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;pm=b.dataset.m;document.querySelectorAll('#pmode button').forEach(x=>x.setAttribute('aria-pressed',x===b));stopP();pc=0;drawPipe()});
+drawPipe();
+
+/* ---------- memória ---------- */
+const MEM=[
+ {n:'Registradores',w:34,d:'Dentro da CPU. Os menores e mais rápidos de todos, e os mais caros por bit.'},
+ {n:'Memória cache',w:52,d:'Pequena e extremamente rápida, entre a CPU e a RAM. É o “frigobar” ao lado do processador: antes de ir à “geladeira” (RAM), longe e lenta, a CPU procura aqui. Guarda o que foi usado mais recentemente e acerta muito por causa do <b>princípio da localidade</b>: programas reutilizam os mesmos dados e instruções em pouco tempo.'},
+ {n:'Memória principal (RAM)',w:72,d:'Onde ficam os programas e dados em uso. Bem maior que a cache, mas muito mais lenta que a CPU: daí o gargalo de von Neumann.'},
+ {n:'Memória externa (disco, SSD)',w:94,d:'A base da pirâmide: a maior capacidade, a mais lenta e a mais barata por bit.'}
+];let mi=1;
+function drawMem(){$('#pyr').innerHTML=MEM.map((m,i)=>`<button data-i="${i}" aria-pressed="${i===mi}" style="width:${m.w}%;background:color-mix(in srgb,var(--acc) ${100-i*22}%,var(--bg))">${m.n}</button>`).join('');$('#pyd').innerHTML=`<h3>${MEM[mi].n}</h3><p style="margin:0">${MEM[mi].d}</p>`}
+$('#pyr').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mi=+b.dataset.i;drawMem();$(`#pyr [data-i="${mi}"]`).focus()});drawMem();
+
+/* ---------- comb x seq ---------- */
+let cn=0,scr=0,sn=0;
+$('#calcb').addEventListener('click',()=>{cn++;$('#calc').textContent='4';$('#calcn').textContent=`apertou ${cn}× · sempre 4`});
+$('#scrb').addEventListener('click',()=>{const prev=scr;scr=1-scr;sn++;$('#scr').textContent=scr?'tela ligada':'tela desligada';$('#scr').classList.toggle('scr-on',!!scr);$('#scrn').textContent=`mesma ação, estado anterior: ${prev?'ligada':'desligada'}`});
+
+/* ---------- barramento ---------- */
+let bw=8;
+function drawBus(){
+ $('#bw').innerHTML=[8,16,32,64].map(n=>`<button data-n="${n}" aria-pressed="${n===bw}">${n} bits</button>`).join('');
+ const cols=Math.min(bw,16);$('#lanes').style.gridTemplateColumns=`repeat(${cols},minmax(0,1fr))`;
+ let h='';for(let i=0;i<bw;i++){const b=Math.random()<.5?1:0;h+=`<span class="${b?'one':''}">${b}</span>`}
+ $('#lanes').innerHTML=h;
+ $('#bst').textContent=`${bw} pistas: ${bw} bits por viagem${bw>8?`, ${bw/8}× o que passa numa estradinha de 8 bits`:''}.`;
+}
+$('#bw').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;bw=+b.dataset.n;drawBus()});drawBus();
+
+/* ---------- quiz ---------- */
+const TP={ger:'Gerações',bin:'Binário',port:'Portas lógicas',des:'Desempenho',mem:'Memória',isa:'CISC × RISC',cir:'Circuitos e barramentos'};
+const PIPE=['Busca da instrução','Decodificação','Endereço do operando','Busca do operando','Execução','Escrita do resultado'];
+const Q=[
+ {id:'g1',tp:'ger',t:'mc',q:'O que define a “geração” de um computador?',o:['O componente eletrônico principal da época','A linguagem de programação mais usada','A quantidade de memória RAM','O sistema operacional'],a:0,h:'Pense no que muda de uma geração para outra: válvula, transistor, chip…',e:'Cada geração é definida pelo componente principal: relés → válvulas → transistores → circuitos integrados → VLSI.'},
+ {id:'g2',tp:'ger',t:'mc',q:'Quem é reconhecida como a “Primeira Programadora”?',o:['Ada Lovelace','Charles Babbage','John von Neumann','Jack Kilby'],a:0,h:'Trabalhou com a Analytical Engine.',e:'Ada Lovelace (1815–1852), pelo trabalho com a Analytical Engine de Babbage.'},
+ {id:'g3',tp:'ger',t:'tf',q:'O MARK I (1944) já era um computador eletrônico de válvulas.',a:1,h:'Lembre o que ele usava como chave e de qual geração ele é.',e:'Falso. O MARK I é da Geração 0: usava relés eletromecânicos, com ciclo de 0,3 s.'},
+ {id:'g4',tp:'ger',t:'mc',q:'Qual foi o primeiro computador a adotar a arquitetura de von Neumann (programa armazenado)?',o:['EDVAC (1949)','ENIAC (1946)','Colossus (1943)','MARK I (1944)'],a:0,h:'É o mais novo dos quatro.',e:'O EDVAC (1949): programa e dados na mesma memória.'},
+ {id:'g5',tp:'ger',t:'mc',q:'O IBM-360 (1964), a primeira família de computadores, é de qual geração?',o:['3ª — circuito integrado','2ª — transistor','1ª — válvula','4ª — VLSI'],a:0,h:'Famílias compatíveis surgiram graças ao chip.',e:'3ª geração: o circuito integrado permitiu famílias em que modelos diferentes rodam o mesmo software.'},
+ {id:'g6',tp:'ger',t:'mc',q:'Segundo a Lei de Moore, o número de transistores num chip…',o:['dobra a cada ~18 meses','dobra a cada 10 anos','cai pela metade a cada ano','está estável desde 1980'],a:0,h:'É o motor do crescimento exponencial da 4ª geração.',e:'Dobra aproximadamente a cada 18 meses.'},
+ {id:'g7',tp:'ger',t:'mc',q:'Qual é a palavra-chave da 2ª geração (1955–1964)?',o:['Transistor','Válvula a vácuo','Circuito integrado','Relé'],a:0,h:'Foi inventado em 1947 e substituiu as válvulas.',e:'Transistor: menor, mais barato, mais rápido e econômico que a válvula.'},
+ {id:'b1',tp:'bin',t:'mc',q:'Por que o computador usa o sistema binário?',o:['É mais simples e confiável distinguir só dois níveis de tensão','O binário ocupa menos espaço em disco','O decimal não pode ser convertido em eletricidade','Os transistores só aguentam 1 volt'],a:0,h:'Pense em variações de energia e calor.',e:'Distinguir “tensão” (1, ~2 a 5 V) de “ausência de tensão” (0, ~0 a 0,8 V) é robusto. Dez níveis seriam um pesadelo.'},
+ {id:'b2',tp:'bin',t:'bin',q:'Converta 13 para binário.',a:'1101',h:'13 = 8 + 4 + 1. Marque 1 nesses pesos.',e:'13 = 8 + 4 + 1 → 1101.'},
+ {id:'b3',tp:'bin',t:'dec',q:'Quanto vale 10111 em decimal?',a:23,h:'Pesos da direita para a esquerda: 1, 2, 4, 8, 16.',e:'16 + 4 + 2 + 1 = 23.'},
+ {id:'b4',tp:'bin',t:'bin',q:'Some em binário: 1101 + 1010',a:'10111',h:'É 13 + 10. Faça em decimal e converta o resultado.',e:'13 + 10 = 23 = 10111.'},
+ {id:'b5',tp:'bin',t:'dec',q:'Qual o maior número que cabe em 1 byte (8 bits)?',a:255,h:'Todos os 8 bits ligados: 128 + 64 + … + 1.',e:'11111111 = 255.'},
+ {id:'b6',tp:'bin',t:'bin',q:'Converta 100 para binário.',a:'1100100',h:'100 = 64 + 32 + 4.',e:'64 + 32 + 4 = 100 → 1100100 (ou 01100100 em 8 bits).'},
+ {id:'b7',tp:'bin',t:'mc',q:'No transistor, o que acontece quando chega um bit 1 no terminal de controle (Gate)?',o:['A chave fecha e a corrente passa','A chave abre e a corrente é bloqueada','O transistor inverte a tensão','Nada: o Gate só mede temperatura'],a:0,h:'O transistor é uma chave automática controlada por eletricidade.',e:'Bit 1 no controle fecha a chave e a corrente passa; bit 0 abre a chave e bloqueia.'},
+ {id:'p1',tp:'port',t:'mc',q:'Dois transistores ligados em SÉRIE formam qual porta?',o:['AND','OR','NOT','XOR'],a:0,h:'Em série, a corrente precisa passar pela 1ª e pela 2ª chave.',e:'AND: só passa se a 1ª E a 2ª chave estiverem fechadas.'},
+ {id:'p2',tp:'port',t:'table',g:'AND',q:'Complete a tabela-verdade da porta AND.',h:'AND só dá 1 em um caso.',e:'AND só dá 1 quando todas as entradas são 1.'},
+ {id:'p3',tp:'port',t:'table',g:'OR',q:'Complete a tabela-verdade da porta OR.',h:'OR só dá 0 em um caso.',e:'OR dá 1 se pelo menos uma entrada for 1; só dá 0 quando ambas são 0.'},
+ {id:'p4',tp:'port',t:'mc',q:'Qual é a expressão booleana da porta OR?',o:['S = A + B','S = A · B','S = Ā','S = A − B'],a:0,h:'O “mais” da álgebra booleana.',e:'OR: S = A + B. AND: S = A · B. NOT: S = Ā.'},
+ {id:'p5',tp:'port',t:'bit',q:'Qual a saída de S = (A · B) + C, com A = 1, B = 0 e C = 1?',a:1,h:'Resolva o AND primeiro, depois o OR.',e:'A · B = 1 · 0 = 0; depois 0 + C = 0 + 1 = 1.'},
+ {id:'p6',tp:'port',t:'bit',q:'Qual a saída de S = NOT(A + B), com A = 0 e B = 1?',a:0,h:'Primeiro o OR dentro do parêntese, depois inverta.',e:'A + B = 0 + 1 = 1; NOT(1) = 0.'},
+ {id:'p7',tp:'port',t:'mc',q:'Quem criou a álgebra que as portas lógicas implementam?',o:['George Boole','Alan Turing','Charles Babbage','Gordon Moore'],a:0,h:'Ela leva o nome dele: álgebra…',e:'George Boole, no século XIX: a Álgebra Booleana.'},
+ {id:'d1',tp:'des',t:'mc',q:'O que é o gargalo de von Neumann?',o:['A lentidão na comunicação entre a CPU rápida e a memória lenta, por um único caminho','O superaquecimento das válvulas','O limite de 255 em um byte','A falta de instruções no RISC'],a:0,h:'A CPU fica ociosa esperando…',e:'A CPU é rápida, a RAM é lenta e há um caminho principal entre elas: a CPU passa muito tempo esperando.'},
+ {id:'d2',tp:'des',t:'order',q:'Coloque as 6 etapas do pipeline na ordem certa.',items:PIPE,h:'Começa indo à memória buscar a instrução e termina salvando o resultado.',e:'Busca da instrução → Decodificação → Endereço do operando → Busca do operando → Execução → Escrita do resultado.'},
+ {id:'d3',tp:'des',t:'mc',q:'Com o pipeline cheio, o que acontece?',o:['Sai uma instrução finalizada a quase todo ciclo','Cada instrução passa a levar só 1 ciclo do início ao fim','O processador deixa de usar o clock','As instruções deixam de passar pela memória'],a:0,h:'Uma instrução individual continua levando 6 ciclos.',e:'Cada instrução ainda leva 6 ciclos, mas como as etapas se sobrepõem, sai uma pronta a quase todo ciclo.'},
+ {id:'d4',tp:'des',t:'mc',q:'O que diferencia o processador superescalar do pipelining?',o:['Tem várias unidades de execução e roda instruções independentes ao mesmo tempo','Divide a instrução em etapas menores','Só aumenta a frequência do clock','Usa microcódigo para cada instrução'],a:0,h:'Paralelismo no nível de instrução.',e:'Superescalar executa mais de uma instrução inteira por ciclo, em unidades de execução diferentes, quando elas não dependem uma da outra.'},
+ {id:'d5',tp:'des',t:'mc',q:'Por que não basta só aumentar a frequência do clock?',o:['Gera muito calor e tem limites práticos','O clock não influencia a velocidade','A memória cache para de funcionar','O binário não suporta frequências altas'],a:0,h:'Pense no que acontece fisicamente com o chip.',e:'Aumentar a frequência gera muito calor e esbarra em limites práticos; por isso surgiram pipeline, superescalar e cache.'},
+ {id:'m1',tp:'mem',t:'mc',q:'No topo da hierarquia de memória ficam memórias…',o:['menores, mais rápidas e mais caras por bit','maiores, mais lentas e mais baratas por bit','maiores e mais rápidas','baratas, como discos e SSD'],a:0,h:'Registradores e cache estão no topo.',e:'Topo: registradores e cache — pequenos, rápidos e caros. Base: RAM e discos — grandes, lentos e baratos.'},
+ {id:'m2',tp:'mem',t:'mc',q:'Qual princípio faz a cache encontrar o que a CPU precisa com tanta frequência?',o:['Localidade','Lei de Moore','Superescalaridade','Microprogramação'],a:0,h:'Programas reutilizam os mesmos dados em pouco tempo.',e:'Princípio da localidade: os programas tendem a reutilizar os mesmos dados e instruções num curto período.'},
+ {id:'m3',tp:'mem',t:'tf',q:'A memória cache fica entre o processador e a memória RAM.',a:0,h:'Lembre do “frigobar” e da “geladeira”.',e:'Verdadeiro: é o intermediário rápido entre CPU e RAM.'},
+ {id:'i1',tp:'isa',t:'mc',q:'Microprogramação (microcódigo) é característica de qual arquitetura?',o:['CISC','RISC','Das duas','De nenhuma'],a:0,h:'Quem precisa de um “dicionário” para traduzir instruções complexas?',e:'CISC: a instrução complexa é um atalho para micro-passos gravados no chip. RISC é sem microprogramação.'},
+ {id:'i2',tp:'isa',t:'mc',q:'Os processadores ARM, presentes na maioria dos celulares, são…',o:['RISC','CISC','de válvula','de microcódigo complexo'],a:0,h:'Simples e econômicos em energia.',e:'RISC: mais simples e consomem menos energia, ideal para dispositivos móveis.'},
+ {id:'i3',tp:'isa',t:'dec',q:'No exemplo da aula, quantas instruções o RISC usa para a tarefa que o CISC faz com uma só?',a:4,h:'Carregue, carregue, some, guarde.',e:'4: LOAD, LOAD, ADD, STORE.'},
+ {id:'i4',tp:'isa',t:'mc',q:'Qual arquitetura se adapta melhor ao pipelining?',o:['RISC, por ter instruções simples de ~1 ciclo','CISC, por ter instruções longas','Nenhuma das duas','As duas igualmente'],a:0,h:'Instruções de tamanho e duração uniformes encaixam melhor nas etapas.',e:'RISC: instruções simples, geralmente de 1 ciclo, encaixam bem no pipeline.'},
+ {id:'c1',tp:'cir',t:'mc',q:'Um circuito cuja saída depende do estado anterior (tem memória) é…',o:['Sequencial','Combinacional','Somador','Inversor'],a:0,h:'Lembre do botão da tela do celular.',e:'Sequencial: lembra o estado anterior; usado em RAM e registradores. Combinacional depende só das entradas atuais.'},
+ {id:'c2',tp:'cir',t:'mc',q:'Qual barramento leva ONDE o dado está e geralmente é de mão única?',o:['Endereços','Dados','Controle','Energia'],a:0,h:'É o “GPS” do sistema.',e:'Barramento de endereços: a CPU define e envia o endereço.'},
+ {id:'c3',tp:'cir',t:'mc',q:'Sinais como “quero LER” e “espere, a via está ocupada” passam pelo barramento de…',o:['Controle','Dados','Endereços','Vídeo'],a:0,h:'São os semáforos da cidade.',e:'Controle: sincroniza e evita colisões de dados.'},
+ {id:'c4',tp:'cir',t:'tf',q:'Um barramento de 64 bits transporta 64 bits de uma vez, e por isso a largura influencia o desempenho.',a:0,h:'Largura = número de pistas.',e:'Verdadeiro: mais pistas, mais dados ao mesmo tempo.'},
+ {id:'c5',tp:'cir',t:'tf',q:'O barramento de dados é de mão única: a CPU só envia dados.',a:1,h:'A CPU lê E escreve na memória.',e:'Falso: o de dados é de mão dupla. Quem costuma ser de mão única é o de endereços.'}
+];
+const GF={AND:(a,b)=>a&b,OR:(a,b)=>a|b};const TR=[[0,0],[0,1],[1,0],[1,1]];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+Q.forEach(q=>{if(q.t==='mc')q.ord=shuf(q.o.map((x,i)=>i));if(q.t==='order')q.pool=shuf(q.items)});
+const KEY='aoc-p1-quiz-v1';let S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let filt='all',list=[],qi=0,an=null;
+const fresh=()=>({sel:null,v:'',ord:[],tab:[null,null,null,null],tries:0,msg:'',marks:null,wrong:false,showAns:false});
+function build(f){filt=f;list=Q.filter(q=>f==='all'||(f==='err'?S[q.id]==='err':q.tp===f));qi=list.findIndex(q=>!S[q.id]);if(qi<0)qi=list.length?0:0;an=fresh()}
+const opts=q=>q.t==='tf'?['Verdadeiro','Falso']:q.o;
+function ansText(q){if(q.t==='mc'||q.t==='tf')return opts(q)[q.a];if(q.t==='order')return q.items.join(' → ');if(q.t==='table')return TR.map(r=>`${r[0]} ${r[1]} → ${GF[q.g](r[0],r[1])}`).join('; ');return String(q.a)}
+function validate(q){
+ if(q.t==='mc'||q.t==='tf')return an.sel==null?'Escolha uma alternativa antes de verificar.':'';
+ if(q.t==='order')return an.ord.length<6?`Faltam ${6-an.ord.length} etapa(s): toque em todas para montar a ordem.`:'';
+ if(q.t==='table')return an.tab.includes(null)?'Preencha todas as linhas da tabela (toque no “?”).':'';
+ const v=an.v.replace(/\s/g,'');
+ if(v==='')return 'Digite sua resposta primeiro.';
+ if(q.t==='bin'&&/[^01]/.test(v))return 'Em binário só valem os algarismos 0 e 1.';
+ if(q.t==='bit'&&!/^[01]$/.test(v))return 'A saída é um único bit: digite 0 ou 1.';
+ if(q.t==='dec'&&!/^\d+$/.test(v))return 'Use só algarismos de 0 a 9.';
+ return '';
+}
+function check(q){
+ if(q.t==='mc'||q.t==='tf')return an.sel===q.a;
+ if(q.t==='order'){an.marks=an.ord.map((x,i)=>x===q.items[i]);return an.marks.every(Boolean)}
+ if(q.t==='table'){an.marks=TR.map((r,i)=>an.tab[i]===GF[q.g](r[0],r[1]));return an.marks.every(Boolean)}
+ const v=an.v.replace(/\s/g,'');
+ if(q.t==='bin')return v.replace(/^0+(?=.)/,'')===q.a;
+ return +v===q.a;
+}
+function body(q,locked){
+ const st=S[q.id];
+ if(q.t==='mc'||q.t==='tf'){const o=opts(q),ord=q.t==='mc'?q.ord:[0,1];
+  return `<div class="opts" role="group">${ord.map((oi,k)=>{let c='';if(locked&&oi===q.a)c='good';else if(locked&&oi===an.sel&&oi!==q.a)c='bad';else if(!locked&&an.wrong&&oi===an.sel)c='bad';
+   return `<button class="opt ${c}" data-act="sel" data-v="${oi}" aria-pressed="${an.sel===oi}" ${locked?'disabled':''}><span class="k">${'ABCD'[k]}</span><span>${esc(o[oi])}</span></button>`}).join('')}</div>`}
+ if(q.t==='order'){
+  const rem=q.pool.filter(x=>!an.ord.includes(x));const show=locked&&st==='err'?q.items:an.ord;
+  return `<div class="ordbox"><div class="slots">${[0,1,2,3,4,5].map(i=>{const x=show[i];const m=an.marks&&!locked?(an.marks[i]?'':' bad'):locked?' good':'';return `<button class="slot${x?' full':''}${x?m:''}" data-act="unord" data-i="${i}" ${locked||!x?'disabled':''} aria-label="posição ${i+1}${x?': '+esc(x)+', toque para remover':''}">${x?esc(x):'<span style="color:var(--mute)">toque numa etapa abaixo</span>'}</button>`}).join('')}</div>${locked?'':`<div class="pool">${rem.map(x=>`<button data-act="ord" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>`}</div>`}
+ if(q.t==='table'){const vals=locked&&st==='err'?TR.map(r=>GF[q.g](r[0],r[1])):an.tab;
+  return `<table class="qt"><thead><tr><th>A</th><th>B</th><th>S = A ${q.g==='AND'?'·':'+'} B</th></tr></thead><tbody>${TR.map((r,i)=>{const m=locked?'good':an.marks?(an.marks[i]?'':'bad'):'';return `<tr class="${m}"><td>${r[0]}</td><td>${r[1]}</td><td><button data-act="tab" data-i="${i}" ${locked?'disabled':''} aria-label="saída para A=${r[0]} e B=${r[1]}: ${vals[i]==null?'vazio':vals[i]}">${vals[i]==null?'?':vals[i]}</button></td></tr>`}).join('')}</tbody></table>`}
+ const ph=q.t==='bin'?'ex.: 1010':q.t==='bit'?'0 ou 1':'número';
+ const val=locked&&st==='err'?String(q.a):an.v;
+ return `<div class="tin"><input id="qin" inputmode="numeric" autocomplete="off" placeholder="${ph}" value="${esc(val)}" class="${locked?'good':an.wrong?'bad':''}" ${locked?'disabled':''} aria-label="Sua resposta"></div>`;
+}
+function drawQ(){
+ const n=list.length,answered=list.filter(q=>S[q.id]).length;
+ $('#chips').innerHTML=[['all','Todas',Q.length],...Object.entries(TP).map(([k,v])=>[k,v,Q.filter(q=>q.tp===k).length]),['err','Meus erros',Q.filter(q=>S[q.id]==='err').length]].map(([k,v,c])=>`<button data-f="${k}" aria-pressed="${k===filt}">${v} · ${c}</button>`).join('');
+ const ok1=list.filter(q=>S[q.id]==='ok1').length,ok2=list.filter(q=>S[q.id]==='ok2').length,er=list.filter(q=>S[q.id]==='err').length;
+ $('#qsum').textContent=n?`${answered} de ${n} respondidas · ${ok1+ok2} certas · ${er} erradas`:'';
+ $('#dots').innerHTML=list.map((q,i)=>`<button data-act="go" data-i="${i}" class="${S[q.id]||''}${i===qi?' cur':''}" aria-label="Questão ${i+1}${S[q.id]?', '+({ok1:'acertou de primeira',ok2:'acertou na segunda',err:'errou'})[S[q.id]]:''}">${i+1}</button>`).join('');
+ if(!n){$('#qbox').innerHTML=`<div class="qcard"><p class="qq">${filt==='err'?'Nenhum erro por aqui.':'Nada neste filtro.'}</p><p>${filt==='err'?'Quando errar uma questão, ela aparece neste filtro para você refazer.':''}</p><button class="btn" data-act="filt" data-f="all">Ver todas</button></div>`;return}
+ if(qi>=n){summary();return}
+ const q=list[qi],st=S[q.id],locked=!!st;
+ let fb='';
+ if(locked){const good=st!=='err';fb=`<div class="fb ${good?'ok':'no'}" role="status"><b>${st==='ok1'?'Certo, de primeira!':st==='ok2'?'Certo na segunda tentativa!':'Resposta certa:'}</b>${good?'':`<p style="margin:2px 0 6px;font-weight:700">${esc(ansText(q))}</p>`}${esc(q.e)}</div>`}
+ else if(an.wrong){fb=`<div class="fb no" role="status"><b>Ainda não.</b>Dica: ${esc(q.h)} Corrija e verifique de novo, ou veja a resposta.</div>`}
+ $('#qbox').innerHTML=`<div class="qcard">
+  <div class="qtop"><span class="tag">${TP[q.tp]}</span><span>Questão ${qi+1} de ${n}</span></div>
+  <div class="bar"><i style="width:${answered/n*100}%"></i></div>
+  <p class="qq" id="qtitle">${esc(q.q)}</p>
+  ${body(q,locked)}
+  <p class="msg" role="alert">${esc(an.msg)}</p>
+  ${fb}
+  <div class="qnav">
+   <div class="row">${locked?`<button class="btn ghost" data-act="redo">Refazer esta</button>`:`<button class="btn" data-act="check">${an.wrong?'Verificar de novo':'Verificar'}</button>${an.wrong?'<button class="btn ghost" data-act="reveal">Ver resposta</button>':''}`}</div>
+   <div class="row"><button class="btn ghost" data-act="prev" ${qi===0?'disabled':''}>Anterior</button><button class="btn ${locked?'':'ghost'}" data-act="next">${qi===n-1?'Ver resultado':locked?'Próxima':'Pular'}</button></div>
+  </div></div>`;
+}
+function summary(){
+ const n=list.length,ok1=list.filter(q=>S[q.id]==='ok1').length,ok2=list.filter(q=>S[q.id]==='ok2').length,er=list.filter(q=>S[q.id]==='err').length,un=n-ok1-ok2-er;
+ const tps=[...new Set(list.map(q=>q.tp))];
+ const rows=tps.map(t=>{const qs=list.filter(q=>q.tp===t),c=qs.filter(q=>S[q.id]==='ok1'||S[q.id]==='ok2').length;return `<div class="tbar"><span>${TP[t]}</span><div><i style="width:${c/qs.length*100}%"></i></div><span>${c}/${qs.length}</span></div>`}).join('');
+ const pct=Math.round((ok1+ok2)/n*100);
+ const msg=un>=n/2?`Faltam ${un} questões: responda todas para ver seu resultado de verdade.`:pct>=90?'Mandou muito bem! Tá pronto(a) pra P1.':pct>=70?'Bom resultado. Revise os assuntos com barra mais curta.':pct>=50?'Tá no caminho. Releia as seções e refaça os erros.':'Volte nas seções acima com calma e tente de novo.';
+ $('#qbox').innerHTML=`<div class="qcard"><p class="qtop" style="margin:0">Resultado</p><div class="score">${ok1+ok2}/${n}</div><p style="font-weight:600">${msg}</p>
+ <p style="margin:0;color:var(--mute)">${ok1} de primeira · ${ok2} na 2ª tentativa · ${er} erradas${un?` · ${un} sem responder`:''}</p>
+ <div style="margin:16px 0">${rows}</div>
+ <div class="row">${er?`<button class="btn" data-act="filt" data-f="err" data-redo="1">Refazer os erros (${er})</button>`:''}${un?`<button class="btn ${er?'ghost':''}" data-act="first">Responder as que faltam</button>`:''}<button class="btn ghost" data-act="restart">Recomeçar este bloco</button></div></div>`;
+}
+const box=$('#qbox');
+function act(a,el){
+ const q=list[qi];
+ if(a==='sel'){an.sel=+el.dataset.v;an.msg='';drawQ();return}
+ if(a==='ord'){an.ord.push(el.dataset.v);an.marks=null;an.msg='';drawQ();const p=box.querySelector('.pool button');if(p)p.focus();return}
+ if(a==='unord'){an.ord.splice(+el.dataset.i,1);an.marks=null;drawQ();return}
+ if(a==='tab'){const i=+el.dataset.i;an.tab[i]=an.tab[i]==null?0:1-an.tab[i];an.marks=null;an.msg='';drawQ();box.querySelector(`[data-act="tab"][data-i="${i}"]`).focus();return}
+ if(a==='check'){const err=validate(q);if(err){an.msg=err;drawQ();const i=$('#qin');if(i)i.focus();return}
+  an.msg='';if(check(q)){S[q.id]=an.tries?'ok2':'ok1';save()}else{an.tries++;if(an.tries>=2){S[q.id]='err';save()}else an.wrong=true}
+  drawQ();$('#qtitle').scrollIntoView({block:'nearest'});return}
+ if(a==='reveal'){S[q.id]='err';save();drawQ();return}
+ if(a==='redo'){delete S[q.id];save();an=fresh();drawQ();return}
+ if(a==='next'){qi++;an=fresh();drawQ();$('#quiz').scrollIntoView({block:'start'});return}
+ if(a==='prev'){qi--;an=fresh();drawQ();return}
+ if(a==='go'){qi=+el.dataset.i;an=fresh();drawQ();if(innerWidth<900)$('#qbox').scrollIntoView({block:'start'});return}
+ if(a==='filt'){const f=el.dataset.f;build(f);if(el.dataset.redo){list.forEach(q=>delete S[q.id]);save();qi=0}drawQ();return}
+ if(a==='first'){qi=list.findIndex(q=>!S[q.id]);an=fresh();drawQ();return}
+ if(a==='restart'){list.forEach(q=>delete S[q.id]);save();qi=0;an=fresh();drawQ();return}
+}
+box.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el&&!el.disabled)act(el.dataset.act,el)});
+box.addEventListener('input',e=>{if(e.target.id==='qin'){an.v=e.target.value;if(an.msg){an.msg='';box.querySelector('.msg').textContent=''}}});
+box.addEventListener('keydown',e=>{if(e.target.id==='qin'&&e.key==='Enter'){e.preventDefault();act('check')}});
+$('#dots').addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el)act('go',el)});
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;build(b.dataset.f);drawQ()});
+$('#qreset').addEventListener('click',e=>{const b=e.currentTarget;if(b.dataset.c){S={};save();b.textContent='Apagar progresso';delete b.dataset.c;build('all');drawQ()}else{b.dataset.c=1;b.textContent='Toque de novo para confirmar';setTimeout(()=>{if(b.dataset.c){delete b.dataset.c;b.textContent='Apagar progresso'}},4000)}});
+build('all');drawQ();
+}
+</script>
+</body>
+</html>
