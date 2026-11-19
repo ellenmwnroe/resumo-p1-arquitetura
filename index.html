@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Resumo P1 · AOC</title>
+<title>Resumo de Arquitetura · P1 e P2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,11 +96,76 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px 28px;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
 .how p{margin:0;color:var(--mute)}
 .bytebox{background:var(--hbg);color:var(--hink);border-radius:22px;padding:clamp(18px,3vw,32px);margin-bottom:8px}
+
+/* P2 */
+.divd{background:var(--ink);color:var(--bg)}
+.divd h2{font-size:clamp(36px,5.5vw,64px);max-width:20ch}
+.divd .kick{opacity:1;color:var(--acc)}
+.divd .lead{color:color-mix(in srgb,var(--bg) 78%,var(--ink))}
+.btn.inv{background:var(--bg);color:var(--ink);border-color:var(--bg)}.btn.inv.ghost{background:transparent;color:var(--bg)}
+.nav .nl{flex:none;align-self:center;font:800 14px "Sofia Sans Condensed";background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 7px;margin-left:8px}
+.toch{margin:22px 0 10px;font-size:28px}.toch:first-child{margin-top:0}.toch small{font:600 14px "Instrument Sans";color:var(--mute);margin-left:8px}
+.chips{display:grid;gap:10px}.chips2{display:flex;flex-wrap:wrap;gap:6px}
+.pvs button{min-height:44px;font-size:15px}
+.alarm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center}
+.alarm .sw button{min-width:150px}
+.almsg{border-radius:14px;min-height:120px;display:grid;place-items:center;text-align:center;font:800 32px/1.1 "Sofia Sans Condensed";background:var(--card);padding:12px}
+.almsg.on{background:var(--acc);color:#14110f}
+@media(max-width:700px){.alarm{grid-template-columns:minmax(0,1fr)}}
+.exq{background:var(--card);border-radius:12px;padding:12px 14px;margin:0}
+.vs{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:10px;align-items:center;margin:8px 0}
+.vs>span{font-weight:700}
+.vbar{position:relative;height:28px;background:var(--card);border-radius:8px;overflow:hidden}
+.vbar i{position:absolute;top:0;bottom:0}
+.vbar .z,.legend .lz{background:var(--ink)}
+.vbar .u,.legend .lu{background:repeating-linear-gradient(45deg,var(--mute) 0 2px,transparent 2px 6px)}
+.vbar .o,.legend .lo{background:var(--acc)}
+.vbar .c,.legend .lc{background:color-mix(in srgb,var(--acc) 40%,var(--bg));border:1px solid var(--acc)}
+.vticks{position:relative;height:20px;font-size:13px;color:var(--mute)}
+.vticks b{position:absolute;font-weight:600;white-space:nowrap;transform:translateX(-50%)}.vticks b:first-child,.vticks b:last-child{transform:none}
+.lvl{display:grid;grid-template-columns:4.2em minmax(0,1fr);gap:2px 14px;align-items:center;margin:12px 0}
+.lvl b{font:800 24px "Sofia Sans Condensed"}.lvl .lb{height:14px;border-radius:99px;background:var(--line);overflow:hidden}.lvl .lb i{display:block;height:100%;background:var(--acc)}
+.lvl p{grid-column:2;margin:0;color:var(--mute);font-size:15px}
+.cpuw{display:grid;gap:10px;align-content:start}
+.cpubox{position:relative;border:3px solid var(--ink);border-radius:20px;padding:40px 14px 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cpubox::before{content:"CPU / UCP";position:absolute;top:10px;left:16px;font:800 18px "Sofia Sans Condensed"}
+.blk{border:2px solid var(--ink);border-radius:14px;background:var(--bg);min-height:88px;text-align:left;padding:10px 12px;font:800 28px/1 "Sofia Sans Condensed"}
+.blk small{display:block;font:600 14px/1.3 "Instrument Sans";margin-top:6px;color:var(--mute)}
+.busrow{border:2px solid var(--ink);border-radius:14px;background:var(--card);min-height:56px;font-weight:700;padding:8px 12px}
+.blk[aria-pressed=true],.busrow[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#14110f}.blk[aria-pressed=true] small{color:#14110f}
+.ext{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ext span{border:2px dashed var(--line);border-radius:12px;padding:12px;text-align:center;font-weight:600;color:var(--mute)}
+.pyr2{display:grid;gap:14px;align-content:start}
+.pyr2 b{display:block;border-radius:10px;padding:12px 14px;color:#14110f;min-width:fit-content}
+.pyr2 span{display:block;font-size:15px;color:var(--mute);margin-top:4px}
+.volr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.volr .seg button{min-height:40px;padding:0 12px;font-size:14px}
+.volr .res{grid-column:1/-1;font-size:14px;font-weight:700}
+.io{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.iob{background:var(--card);border-radius:12px;padding:10px;min-height:118px;transition:background .2s}
+.iob>b{display:block;font:800 20px "Sofia Sans Condensed";margin-bottom:6px}
+.iob>span{font-size:14px;font-weight:600}
+.iob.busy{background:var(--acc);color:#14110f}
+.bslots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
+.bslots i{height:26px;border-radius:5px;background:var(--bg);display:grid;place-items:center;font:700 14px ui-monospace,Menlo,monospace;font-style:normal;border:1px solid var(--line)}
+.bslots i.f{background:var(--ink);color:var(--bg)}
+#ioprn{font-size:24px;font-weight:800;letter-spacing:.08em;word-break:break-all}
+@media(max-width:520px){.io{grid-template-columns:minmax(0,1fr)}.iob{min-height:0}}
+.ps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:12px}
+@media(max-width:700px){.ps{grid-template-columns:minmax(0,1fr)}}
+.psl{margin:0 0 6px;font-weight:700}
+.wires{display:grid;gap:4px}
+.wire{display:grid;grid-template-columns:6.5em minmax(0,1fr) 6.5em;align-items:center;gap:8px;font:700 15px ui-monospace,Menlo,monospace;min-height:20px}
+.wire i{height:3px;background:var(--off);border-radius:2px}.wire.live i{background:var(--acc)}
+.wire .s{text-align:right;color:var(--mute)}.wire .d{color:var(--acct)}
+.frames{display:flex;gap:3px;margin-top:10px}
+.frames i{font-style:normal;flex:1;min-height:34px;border-radius:6px;display:grid;place-items:center;font-size:13px;font-weight:700}
+.frames .d{flex:3;background:var(--ink);color:var(--bg)}.frames .st,.frames .sp{background:var(--acc);color:#14110f}.frames .gap{background:transparent;border-bottom:2px dashed var(--line);border-radius:0}
+.ticks{height:12px;margin-top:10px;background:repeating-linear-gradient(90deg,var(--acc) 0 3px,transparent 3px 33.33%)}
 /* nav */
 .nav{display:flex;gap:6px;padding:10px max(5vw,16px);border-bottom:1px solid var(--line);background:var(--bg);z-index:5}
 .nav a{color:var(--ink);text-decoration:none;font-weight:600;padding:10px 14px;border-radius:999px;white-space:nowrap}
 .nav a:hover{background:var(--card)}.nav a.q{background:var(--acc);color:#14110f}
-@media(min-width:900px){.nav{position:sticky;top:0;justify-content:center}}
+@media(min-width:900px){.nav{position:sticky;top:0;justify-content:safe center}}
 
 /* gerações */
 .tl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;position:relative;margin-bottom:18px}
@@ -224,18 +289,18 @@ footer{font-size:14px;color:var(--mute)}
  <div class="in hgrid">
   <div>
    <p class="kick">Monitoria · Arquitetura e Organização de Computadores</p>
-   <h1>Resumo para a prova de Arquitetura</h1>
+   <h1>Resumo para as provas de Arquitetura</h1>
    <p class="by">por <b>Ellen Monroe</b>, monitora da disciplina</p>
-   <p class="sub">Oi, turma! Juntei aqui tudo o que vocês viram em aula para a P1, do relé ao barramento, explicado do jeito mais direto que consegui. Cada assunto tem um resumo curto, um simulador para mexer e as dicas do que tem mais chance de cair. No fim, um banco de perguntas que corrige na hora.</p>
-   <div class="row"><a class="btn hb" href="#comecar">Começar o resumo</a><a class="btn hb ghost" href="#quiz">Ir direto para as perguntas</a></div>
+   <p class="sub">Oi, turma! Juntei aqui tudo o que vocês viram em aula, separado por prova. Cada assunto tem um resumo curto, um simulador para mexer e as dicas do que tem mais chance de cair. No fim, um banco de perguntas que corrige na hora. Vai estudar para a P2? Passe na P1 antes: um conteúdo depende do outro.</p>
+   <div class="row"><a class="btn hb" href="#p2">Resumo da P2</a><a class="btn hb ghost" href="#p1">Resumo da P1</a><a class="btn hb ghost" href="#quiz">Perguntas</a></div>
   </div>
   <svg class="chip" viewBox="0 0 400 400" role="img" aria-label="Ilustração de um chip">
    <g fill="var(--pin)"><rect x="70" y="20" width="14" height="40" rx="3"/><rect x="70" y="340" width="14" height="40" rx="3"/><rect x="20" y="70" width="40" height="14" rx="3"/><rect x="340" y="70" width="40" height="14" rx="3"/><rect x="104" y="20" width="14" height="40" rx="3"/><rect x="104" y="340" width="14" height="40" rx="3"/><rect x="20" y="104" width="40" height="14" rx="3"/><rect x="340" y="104" width="40" height="14" rx="3"/><rect x="138" y="20" width="14" height="40" rx="3"/><rect x="138" y="340" width="14" height="40" rx="3"/><rect x="20" y="138" width="40" height="14" rx="3"/><rect x="340" y="138" width="40" height="14" rx="3"/><rect x="172" y="20" width="14" height="40" rx="3"/><rect x="172" y="340" width="14" height="40" rx="3"/><rect x="20" y="172" width="40" height="14" rx="3"/><rect x="340" y="172" width="40" height="14" rx="3"/><rect x="206" y="20" width="14" height="40" rx="3"/><rect x="206" y="340" width="14" height="40" rx="3"/><rect x="20" y="206" width="40" height="14" rx="3"/><rect x="340" y="206" width="40" height="14" rx="3"/><rect x="240" y="20" width="14" height="40" rx="3"/><rect x="240" y="340" width="14" height="40" rx="3"/><rect x="20" y="240" width="40" height="14" rx="3"/><rect x="340" y="240" width="40" height="14" rx="3"/><rect x="274" y="20" width="14" height="40" rx="3"/><rect x="274" y="340" width="14" height="40" rx="3"/><rect x="20" y="274" width="40" height="14" rx="3"/><rect x="340" y="274" width="40" height="14" rx="3"/><rect x="308" y="20" width="14" height="40" rx="3"/><rect x="308" y="340" width="14" height="40" rx="3"/><rect x="20" y="308" width="40" height="14" rx="3"/><rect x="340" y="308" width="40" height="14" rx="3"/></g>
    <rect x="52" y="52" width="296" height="296" rx="26" fill="var(--chip)"/>
    <rect x="52" y="52" width="296" height="10" rx="5" fill="var(--chipin)" opacity=".35"/>
    <rect x="96" y="96" width="208" height="208" rx="14" fill="none" stroke="var(--chipin)" stroke-width="3" stroke-dasharray="6 8"/>
-   <text x="200" y="232" text-anchor="middle" font-family="Sofia Sans Condensed,sans-serif" font-weight="800" font-size="118" fill="var(--chipin)">P1</text>
-   <text x="200" y="272" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-weight="700" font-size="17" fill="var(--chipin)" letter-spacing="2">01010000 00110001</text>
+   <text x="200" y="232" text-anchor="middle" font-family="Sofia Sans Condensed,sans-serif" font-weight="800" font-size="96" fill="var(--chipin)">P1·P2</text>
+   <text x="200" y="272" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-weight="700" font-size="17" fill="var(--chipin)" letter-spacing="2">resumo + simulador + quiz</text>
    <circle cx="84" cy="84" r="9" fill="var(--chipin)"/>
   </svg>
  </div>
@@ -244,19 +309,26 @@ footer{font-size:14px;color:var(--mute)}
 <section class="band" id="comecar"><div class="in">
  <h2>O que você vai encontrar aqui</h2>
  <p class="lead">Pode ler na ordem ou pular para o assunto que está mais difícil. Os que têm simulador você aprende mexendo.</p>
- <div class="toc" id="toc"></div>
+ <div id="toc"></div>
  <div class="how">
   <div><h3>Leia o resumo</h3><p>Cada seção vai direto ao ponto, com as analogias da aula e uma caixa “Na prova” com o que mais importa.</p></div>
   <div><h3>Mexa nos simuladores</h3><p>Ligue bits, teste portas lógicas, rode o pipeline ciclo a ciclo. Ver funcionando ajuda a não esquecer.</p></div>
-  <div><h3>Teste-se no final</h3><p>São 38 perguntas. Errou? Vem uma dica e outra chance. Seu progresso fica salvo neste navegador.</p></div>
+  <div><h3>Teste-se no final</h3><p>Tem perguntas da P1 e da P2. Errou? Vem uma dica e outra chance. Seu progresso fica salvo neste navegador.</p></div>
  </div>
 </div></section>
 
 
 
 <nav class="nav scroll" aria-label="Seções">
- <a href="#geracoes">Gerações</a><a href="#binario">Binário</a><a href="#portas">Portas lógicas</a><a href="#desempenho">Desempenho</a><a href="#memoria">Memória</a><a href="#cisc-risc">CISC × RISC</a><a href="#circuitos">Circuitos</a><a href="#barramentos">Barramentos</a><a href="#quiz" class="q">Perguntas</a>
+ <span class="nl">P1</span><a href="#geracoes">Gerações</a><a href="#binario">Binário</a><a href="#portas">Portas</a><a href="#desempenho">Desempenho</a><a href="#memoria">Memória</a><a href="#cisc-risc">CISC × RISC</a><a href="#circuitos">Circuitos</a><a href="#barramentos">Barramentos</a><span class="nl">P2</span><a href="#p2-boole">Boole</a><a href="#p2-familias">TTL × CMOS</a><a href="#p2-cpu">CPU</a><a href="#p2-memoria">Memória</a><a href="#p2-es">E/S</a><a href="#p2-tx">Transmissão</a><a href="#quiz" class="q">Perguntas</a>
 </nav>
+
+<section class="band divd" id="p1"><div class="in">
+ <p class="kick">Prova 1</p>
+ <h2>Do relé ao barramento: a base de tudo</h2>
+ <p class="lead">Gerações, binário, portas lógicas, desempenho, memória, CISC × RISC, circuitos e barramentos. A P2 se apoia nisso tudo.</p>
+ <div class="row"><a class="btn inv" href="#geracoes">Começar a P1</a><a class="btn inv ghost" href="#quiz" data-goquiz="p1">Perguntas da P1</a></div>
+</div></section>
 
 <section class="band" id="geracoes"><div class="in">
  <h2>Cada geração é definida pelo componente da época</h2>
@@ -401,7 +473,7 @@ STORE A, R1    ; resultado → memória</code></pre>
    <tr><td>Foco</td><td>Facilitar a programação</td><td>Hardware rápido e eficiente</td></tr>
   </tbody>
  </table>
- <div class="tip"><b>Na prova</b>A diferença central é a complexidade das instruções. Associe <b>CISC → microprogramação</b> e <b>RISC → melhor adaptação ao pipelining</b>.</div>
+ <div class="tip"><b>Na prova</b>A diferença central é a complexidade das instruções. Associe <b>CISC → microprogramação</b> e <b>RISC → melhor adaptação ao pipelining</b>. Esse assunto volta na P2, e lá vai cair com certeza.</div>
 </div></section>
 
 <section class="band" id="circuitos"><div class="in">
@@ -436,9 +508,197 @@ STORE A, R1    ; resultado → memória</code></pre>
  <p class="pstat" id="bst" aria-live="polite"></p>
 </div></section>
 
+<section class="band divd" id="p2"><div class="in">
+ <p class="kick">Prova 2</p>
+ <h2>Álgebra de Boole, chips, CPU por dentro e entrada e saída</h2>
+ <p class="lead">Atenção: o conteúdo da P2 depende da P1. Se algo aqui parecer solto (transistor, binário, AND/OR/NOT, barramentos, CISC × RISC), volte nas seções da P1 antes.</p>
+ <div class="row"><a class="btn inv" href="#p2-boole">Começar a P2</a><a class="btn inv ghost" href="#quiz" data-goquiz="p2">Perguntas da P2</a></div>
+</div></section>
+
+<section class="band" id="p2-boole"><div class="in">
+ <h2>Álgebra de Boole: da frase ao circuito</h2>
+ <p class="lead">É usar a matemática para descrever hardware. O caminho tem três passos.</p>
+ <div class="grid3">
+  <div class="card"><h3>Expressar</h3><p style="margin:0">Escrever a ideia de hardware como frase lógica: “o alarme toca SE a ignição ESTIVER ligada E o cinto ESTIVER solto”.</p></div>
+  <div class="card"><h3>Simplificar</h3><p style="margin:0">Pegar essa frase matemática (a expressão) e deixá-la o mais enxuta possível.</p></div>
+  <div class="card"><h3>Transformar em circuito</h3><p style="margin:0">Montar a expressão simplificada com portas lógicas de verdade.</p></div>
+ </div>
+ <div class="card alarm" style="margin-top:16px">
+  <div><h3>Teste a frase do alarme</h3><p style="margin:0 0 4px">Alarme = Ignição <b>·</b> Cinto solto (uma porta AND).</p><div class="sw" id="alsw"></div></div>
+  <div class="almsg" id="alout" aria-live="polite"></div>
+ </div>
+ <h3 style="margin-top:32px">As 7 portas</h3>
+ <p style="margin-top:0">Escolha a porta e ligue as entradas. NAND, NOR e XNOR são as “inversas” de AND, OR e XOR: repare na bolinha na saída do símbolo.</p>
+ <div class="seg" id="g7sel" role="group" aria-label="Porta"></div>
+ <div class="lab" style="margin-top:16px">
+  <div class="card">
+   <div class="sw" id="g7sw"></div>
+   <p style="margin:6px 0 0;color:var(--mute);font-weight:600">Saída S</p>
+   <div class="outbig" id="g7out" aria-live="polite">0</div>
+   <p id="g7log" style="font-weight:600"></p>
+   <p id="g7ex" class="exq"></p>
+  </div>
+  <div class="card figs">
+   <div><p style="margin:0;font-weight:700">Símbolo</p><svg id="g7sym" viewBox="0 0 220 120" role="img" aria-label="Símbolo da porta"></svg></div>
+   <table class="tt"><thead id="g7th"></thead><tbody id="g7tb"></tbody></table>
+   <p style="margin:0"><b>Expressão:</b> <span id="g7exp" class="mono"></span></p>
+  </div>
+ </div>
+ <div class="tip"><b>Na prova</b>Saiba a regra de cada uma: AND (todas 1), OR (pelo menos uma 1), NOT (inverte), NAND (só dá 0 quando todas são 1), NOR (só dá 1 quando todas são 0), XOR (1 quando são diferentes), XNOR (1 quando são iguais).</div>
+</div></section>
+
+<section class="band alt" id="p2-familias"><div class="in">
+ <h2>TTL × CMOS: as famílias que fabricam as portas</h2>
+ <p class="lead">As portas lógicas são vendidas dentro de chips (circuitos integrados, os CIs). “Família lógica” é o nome da tecnologia usada para fabricar as portas dentro do chip.</p>
+ <div class="grid2">
+  <div class="card"><h3>TTL · Transistor-Transistor Logic</h3><ul class="clean">
+   <li><b>Feita com</b> transistores bipolares: o tipo mais básico, fácil de polarizar e durável. Conduz com dois tipos de carga (positiva e negativa).</li>
+   <li><b>Nível 0:</b> 0 V a 0,8 V · <b>nível 1:</b> 2 V a 5 V. Centrada em 5 V.</li>
+   <li><b>Pontos fortes:</b> velocidade alta e mais tolerância a certos ruídos. Historicamente dominante, mas gasta mais energia parada.</li>
+   <li><b>Variantes:</b> L (baixo consumo), S (rápida) e LS (a mais comum).</li>
+   <li><b>Código:</b> começa com <b>74</b> (ex.: 7408).</li></ul></div>
+  <div class="card"><h3>CMOS · Complementary MOS</h3><ul class="clean">
+   <li><b>Feita com</b> transistores MOSFET, ativados só por tensão: não gastam energia para ficar ligados. São os mais usados no mundo.</li>
+   <li><b>Vantagem principal:</b> consumo baixíssimo.</li>
+   <li><b>Tensão:</b> flexível, de 3 V a 18 V.</li>
+   <li><b>Variantes:</b> HC (alta velocidade) e HCT (compatível com chips TTL).</li>
+   <li><b>Código:</b> começa com <b>40</b> (ex.: 4081).</li></ul></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <h3>As tensões lado a lado</h3>
+  <div class="vs"><span>TTL</span><div class="vbar"><i class="z" style="left:0;width:4.44%"></i><i class="u" style="left:4.44%;width:6.67%"></i><i class="o" style="left:11.1%;width:16.7%"></i></div></div>
+  <div class="vs"><span>CMOS</span><div class="vbar"><i class="c" style="left:16.7%;width:83.3%"></i></div></div>
+  <div class="vs"><span></span><div class="vticks"><b style="left:0">0 V</b><b style="left:27.8%">5 V</b><b style="left:55.6%">10 V</b><b style="right:0">18 V</b></div></div>
+  <div class="legend"><span><i class="lz"></i>TTL nível 0 (0 a 0,8 V)</span><span><i class="lu"></i>TTL não garante nem 0 nem 1</span><span><i class="lo"></i>TTL nível 1 (2 a 5 V)</span><span><i class="lc"></i>CMOS funciona de 3 a 18 V</span></div>
+ </div>
+ <h3 style="margin-top:28px">Leia o chip</h3>
+ <p style="margin-top:0">Escolha a família e o que tem dentro, ou digite um código para descobrir o que é.</p>
+ <div class="lab">
+  <div class="card">
+   <div class="seg" id="famsel" role="group" aria-label="Família"></div>
+   <div class="seg" id="chipsel" role="group" aria-label="Portas" style="margin-top:10px"></div>
+   <form class="tin" id="cform" novalidate style="margin-top:16px"><input id="cin" placeholder="ex.: 7486 ou 74LS08" autocomplete="off" aria-label="Código do chip"><button class="btn" type="submit">Identificar</button></form>
+   <p class="msg" id="cerr" role="alert"></p>
+  </div>
+  <div class="card figs"><svg id="dip" viewBox="0 0 300 150" role="img" aria-label="Chip"></svg><p id="dipinfo" style="margin:0;font-weight:600" aria-live="polite"></p></div>
+ </div>
+ <table class="stack" style="margin-top:18px">
+  <thead><tr><th>O que tem dentro</th><th>Código TTL</th><th>Código CMOS</th></tr></thead>
+  <tbody id="ctab"></tbody>
+ </table>
+ <h3 style="margin-top:28px">Níveis de integração (tamanho do chip)</h3>
+ <div id="lvls"></div>
+ <div class="tip"><b>Resumindo</b>TTL: lógica com transistores bipolares, historicamente dominante, gasta mais energia parada, centrada em 5 V. CMOS: MOSFETs, consumo muito menor, ampla faixa de alimentação, ideal para circuitos modernos de baixa tensão. Microcontroladores e lógica moderna são quase só CMOS; periféricos antigos e controle industrial ainda podem usar TTL. A escolha depende de tensão, consumo, velocidade e compatibilidade.</div>
+</div></section>
+
+<section class="band" id="p2-cpu"><div class="in">
+ <h2>CPU por dentro: quem manda, quem calcula, quem guarda</h2>
+ <p class="lead">A CPU (ou UCP, Unidade Central de Processamento) é o cérebro do computador. Toque em cada parte.</p>
+ <div class="grid2">
+  <div class="cpuw">
+   <div class="cpubox" id="cpu"></div>
+   <button class="busrow" data-k="bus" aria-pressed="false">Barramentos · dados ⇄ · endereços → · controle ⇄</button>
+   <div class="ext"><span>Memória</span><span>Entrada e saída</span></div>
+  </div>
+  <div class="card" id="cpud" aria-live="polite"></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <h3>O clock é o baterista</h3>
+  <p style="margin-top:0">Gera pulsos constantes que marcam o ritmo. A cada batida, a CPU executa uma ou mais pequenas operações. A frequência, em Hertz (Hz), é o número de batidas por segundo.</p>
+  <label for="ghz" style="font-weight:600">Frequência: <span id="ghzv"></span></label>
+  <input type="range" id="ghz" min="1" max="5" step="0.5" value="3" style="width:100%;max-width:420px;display:block;margin:10px 0">
+  <svg id="wave" viewBox="0 0 400 60" style="width:100%;max-width:520px;height:60px;display:block" aria-hidden="true"></svg>
+  <p class="pstat" id="ghzt"></p>
+ </div>
+ <div class="tip"><b>Na prova</b>UC controla (é a mais complexa), ULA calcula (aritmética e lógica), registradores guardam temporariamente (voláteis), barramentos ligam tudo. Dados e controle são bidirecionais; endereços é unidirecional. CISC × RISC também cai: <a href="#cisc-risc" style="color:inherit;font-weight:700">revise aqui</a>.</div>
+</div></section>
+
+<section class="band alt" id="p2-memoria"><div class="in">
+ <h2>Memória: guardar e recuperar</h2>
+ <p class="lead">A função da memória é armazenar o que o computador manipula. Ela tem duas operações básicas: <b>escrita</b> (guardar) e <b>leitura</b> (recuperar). Como nenhuma memória é rápida e grande ao mesmo tempo, elas formam uma pirâmide.</p>
+ <div class="grid2">
+  <div class="pyr2" id="pyr2"></div>
+  <div class="card">
+   <h3>Volátil ou permanente?</h3>
+   <p style="margin-top:0">Volátil perde tudo quando desliga. Classifique cada uma:</p>
+   <div id="volg"></div>
+   <p class="pstat" id="volst" aria-live="polite"></p>
+  </div>
+ </div>
+ <div class="tip"><b>Na prova</b>Topo: mais rápidas, mais caras, menor capacidade. Base: mais lentas, mais baratas, maior capacidade. A P2 acrescenta: cache em níveis (L1, L2, L3) e a memória secundária (HD, SSD, CD-ROM) como armazenamento permanente.</div>
+</div></section>
+
+<section class="band" id="p2-es"><div class="in">
+ <h2>Entrada e saída: a CPU não fala direto com o periférico</h2>
+ <p class="lead">Se a CPU (rápida) ficasse esperando a impressora (lenta) terminar uma página, o computador inteiro travaria. Por isso existe um gerente no meio do caminho.</p>
+ <div class="grid2">
+  <div>
+   <h3>Interface de E/S</h3>
+   <p style="margin-top:0">Também chamada de <b>controladora</b> ou <b>adaptador</b> (ex.: placa de vídeo, porta USB). Pense nela como um gerente que cuida de um funcionário (o periférico):</p>
+   <ul class="clean">
+    <li>A CPU (chefe) não fala com o periférico: fala com a interface.</li>
+    <li>A CPU joga os dados na interface, que é rápida, e volta a fazer coisas importantes.</li>
+    <li>A interface guarda os dados num <b>buffer</b> e vai passando para o periférico no ritmo lento dele.</li>
+    <li>É ela que <b>compatibiliza as diferentes características</b>, principalmente a velocidade.</li>
+   </ul>
+  </div>
+  <div class="card">
+   <h3>Simule: imprimir com e sem interface</h3>
+   <div class="seg" id="iomode" role="group" aria-label="Modo"><button data-m="int" aria-pressed="true">Com interface</button><button data-m="dir" aria-pressed="false">Sem interface</button></div>
+   <div class="io">
+    <div class="iob" id="iocpu"><b>CPU</b><span></span></div>
+    <div class="iob"><b>Buffer</b><div class="bslots" id="iobuf"></div></div>
+    <div class="iob"><b>Impressora</b><span id="ioprn" class="mono"></span></div>
+   </div>
+   <div class="row"><button class="btn" id="iosend">Mandar imprimir “OLA!”</button><button class="btn ghost" id="ioreset">Zerar</button></div>
+   <p class="pstat" id="iost" aria-live="polite"></p>
+  </div>
+ </div>
+ <h3 style="margin-top:32px">Paralelo × serial</h3>
+ <p style="margin-top:0">São os dois jeitos de a interface conversar com o periférico.</p>
+ <div class="grid2">
+  <div class="card"><h3>Paralelo</h3><ul class="clean"><li>Cabo grosso, cheio de pinos (o cabo de impressora antigo).</li><li>Vários fios de dados (ex.: 8): manda 1 byte inteiro de uma vez, um bit por fio.</li><li><b>Rápido</b>, mas só funciona bem em <b>distâncias curtas</b>.</li><li>Ex.: impressoras antigas, scanners.</li></ul></div>
+  <div class="card"><h3>Serial</h3><ul class="clean"><li>Cabo fino (USB, mouse antigo), com um só fio de dados.</li><li>A interface desmonta o byte e manda os bits em fila; o periférico remonta do outro lado.</li><li>Mais lento (bit a bit), porém <b>mais barato</b> (menos fios) e bom em <b>longas distâncias</b>.</li><li>Ex.: mouse, teclado, modem. O USB (Universal <b>Serial</b> Bus) é o exemplo moderno e rápido.</li></ul></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <div class="row" style="justify-content:space-between"><h3 style="margin:0">Mande o byte 01101001</h3><div class="row"><button class="btn" id="pssend">Enviar</button><span class="pstat" id="pstick" style="margin:0"></span></div></div>
+  <div class="ps">
+   <div><p class="psl">Paralelo · 8 fios</p><div class="wires" id="wpar"></div></div>
+   <div><p class="psl">Serial · 1 fio</p><div class="wires" id="wser"></div></div>
+  </div>
+  <p class="pstat" id="psst" aria-live="polite"></p>
+ </div>
+</div></section>
+
+<section class="band alt" id="p2-tx"><div class="in">
+ <h2>Transmissão: o ritmo e o sentido da conversa</h2>
+ <p class="lead">Duas perguntas diferentes: a conversa tem ritmo fixo (síncrona) ou não (assíncrona)? E para qual lado ela pode ir (simplex, half ou full-duplex)?</p>
+ <div class="grid2">
+  <div class="card"><h3>Assíncrona · mensagem de texto</h3><p style="margin-top:0">O tempo entre um caractere e o próximo não é fixo. Para o receptor saber onde cada caractere começa e termina, vão junto <b>bits de start</b> e <b>bits de stop</b>. É <b>menos eficiente</b>: gasta bits que não são dado.</p>
+   <div class="frames" aria-label="Três caracteres com start e stop e intervalos irregulares"><i class="st">S</i><i class="d">8 bits</i><i class="sp">P</i><i class="gap" style="flex:.5"></i><i class="st">S</i><i class="d">8 bits</i><i class="sp">P</i><i class="gap" style="flex:1.4"></i><i class="st">S</i><i class="d">8 bits</i><i class="sp">P</i></div>
+   <p style="margin:8px 0 0;color:var(--mute);font-size:15px">Com 1 start e 1 stop, a cada 10 bits só 8 são dado.</p></div>
+  <div class="card"><h3>Síncrona · música com batida</h3><p style="margin-top:0">O intervalo entre caracteres é sempre o mesmo. Transmissor e receptor combinam um <b>clock</b> e seguem esse ritmo. É <b>mais eficiente</b>: não precisa de start nem stop.</p>
+   <div class="ticks" aria-hidden="true"></div>
+   <div class="frames" aria-label="Três caracteres seguidos sem start e stop"><i class="d">8 bits</i><i class="d">8 bits</i><i class="d">8 bits</i></div>
+   <p style="margin:8px 0 0;color:var(--mute);font-size:15px">Tudo o que viaja é dado, no compasso do clock.</p></div>
+ </div>
+ <h3 style="margin-top:32px">Simplex, half-duplex e full-duplex</h3>
+ <p style="margin-top:0">Escolha o tipo e tente mandar mensagens.</p>
+ <div class="seg" id="dxsel" role="group" aria-label="Tipo de transmissão"></div>
+ <div class="lab" style="margin-top:14px">
+  <div class="card figs"><svg id="dxsvg" viewBox="0 0 320 120" role="img" aria-label="Dois aparelhos conversando"></svg></div>
+  <div class="card">
+   <p id="dxdesc" style="margin-top:0"></p>
+   <div class="row"><button class="btn ghost" data-dx="a" id="dxa">A transmite</button><button class="btn ghost" data-dx="b" id="dxb">B transmite</button><button class="btn" data-dx="ab">Os dois ao mesmo tempo</button></div>
+   <p class="pstat" id="dxst" aria-live="polite"></p>
+  </div>
+ </div>
+ <div class="tip"><b>Na prova</b>Assíncrona usa start/stop (menos eficiente); síncrona usa clock combinado (mais eficiente). Simplex = mão única (rádio, TV). Half-duplex = mão dupla, um de cada vez (walkie-talkie). Full-duplex = mão dupla ao mesmo tempo (telefone).</div>
+</div></section>
+
 <section class="band" id="quiz"><div class="in">
  <h2>Perguntas e respostas</h2>
- <p class="lead">38 questões tiradas do resumo. Errou? Você ganha uma dica e mais uma chance antes de ver a resposta. Seu progresso fica salvo neste navegador.</p>
+ <p class="lead" id="qlead">Questões tiradas dos dois resumos. Errou? Você ganha uma dica e mais uma chance antes de ver a resposta. Seu progresso fica salvo neste navegador.</p>
  <div class="chips" id="chips" role="group" aria-label="Filtrar por assunto"></div>
  <div class="qwrap">
   <div id="qbox"></div>
@@ -452,7 +712,7 @@ STORE A, R1    ; resultado → memória</code></pre>
  </div>
 </div></section>
 
-<footer class="band alt"><div class="in">Material da monitoria, feito a partir do resumo da P1. Bons estudos!</div></footer>
+<footer class="band alt"><div class="in">Material da monitoria de Arquitetura e Organização de Computadores, por Ellen Monroe. Bons estudos!</div></footer>
 
 <script>
 {
@@ -460,8 +720,10 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 
-const TOC=[['#geracoes','Gerações','Do relé ao VLSI: o componente que define cada época.','linha do tempo'],['#binario','Binário e transistor','Por que tudo vira 0 e 1, e como 13 + 10 vira 23.','simulador'],['#portas','Portas lógicas','AND, OR e NOT: tabela-verdade, símbolo e circuito.','simulador'],['#desempenho','Desempenho','Clock, gargalo de von Neumann, pipeline e superescalar.','simulador'],['#memoria','Hierarquia de memória','Registradores, cache, RAM e disco: o trade-off.',''],['#cisc-risc','CISC × RISC','Duas filosofias de processador, lado a lado.',''],['#circuitos','Circuitos','Combinacional (sem memória) × sequencial (com memória).','simulador'],['#barramentos','Barramentos','Dados, endereços e controle: as ruas do computador.','simulador'],['#quiz','Perguntas e respostas','38 questões com correção, dica e resultado por assunto.','quiz']];
-$('#toc').innerHTML=TOC.map(([h,t,d,g])=>`<a href="${h}" class="${h==='#quiz'?'q':''}"><b>${t}</b><span>${d}</span>${g?`<em>${g}</em>`:''}</a>`).join('');
+const TOC1=[['#geracoes','Gerações','Do relé ao VLSI: o componente que define cada época.','linha do tempo'],['#binario','Binário e transistor','Por que tudo vira 0 e 1, e como 13 + 10 vira 23.','simulador'],['#portas','Portas lógicas','AND, OR e NOT: tabela-verdade, símbolo e circuito.','simulador'],['#desempenho','Desempenho','Clock, gargalo de von Neumann, pipeline e superescalar.','simulador'],['#memoria','Hierarquia de memória','Registradores, cache, RAM e disco: o trade-off.',''],['#cisc-risc','CISC × RISC','Duas filosofias de processador, lado a lado.',''],['#circuitos','Circuitos','Combinacional (sem memória) × sequencial (com memória).','simulador'],['#barramentos','Barramentos','Dados, endereços e controle: as ruas do computador.','simulador']];
+const TOC2=[['#p2-boole','Álgebra de Boole e 7 portas','Da frase ao circuito; AND, OR, NOT, NAND, NOR, XOR e XNOR.','simulador'],['#p2-familias','TTL × CMOS','Famílias lógicas, tensões, como ler o código do chip e níveis de integração.','simulador'],['#p2-cpu','CPU por dentro','UC, ULA, registradores, barramentos e o clock.','simulador'],['#cisc-risc','CISC × RISC','Mesmo conteúdo da P1, mas agora vai cair com certeza.','revisão'],['#p2-memoria','Memória','Leitura e escrita, cache L1–L3, volátil × permanente.','simulador'],['#p2-es','Entrada e saída','Interface de E/S, buffer, paralelo × serial.','simulador'],['#p2-tx','Transmissão','Síncrona × assíncrona; simplex, half e full-duplex.','simulador']];
+const tocA=([h,t,d,g])=>`<a href="${h}"><b>${t}</b><span>${d}</span>${g?`<em>${g}</em>`:''}</a>`;
+$('#toc').innerHTML=`<h3 class="toch">Prova 1</h3><div class="toc">${TOC1.map(tocA).join('')}</div><h3 class="toch">Prova 2 <small>depende da P1</small></h3><div class="toc">${TOC2.map(tocA).join('')}</div><div class="toc" style="margin-top:12px"><a href="#quiz" class="q"><b>Perguntas e respostas</b><span id="tocq">Questões das duas provas, com correção, dica e resultado por assunto.</span><em>quiz</em></a></div>`;
 /* ---------- byte ---------- */
 const WT=[128,64,32,16,8,4,2,1];let bits=[0,1,1,0,0,1,0,0];
 function drawByte(){
@@ -601,8 +863,177 @@ function drawBus(){
 }
 $('#bw').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;bw=+b.dataset.n;drawBus()});drawBus();
 
+/* ================= P2 ================= */
+/* alarme */
+let ign=1,cin=0;
+function drawAl(){const s=ign&cin;
+ $('#alsw').innerHTML=`<button data-k="i" class="${ign?'on':''}" aria-pressed="${!!ign}">Ignição = ${ign}</button><button data-k="c" class="${cin?'on':''}" aria-pressed="${!!cin}">Cinto solto = ${cin}</button>`;
+ const o=$('#alout');o.classList.toggle('on',!!s);o.innerHTML=s?'Alarme tocando<br><small style="font:600 15px Instrument Sans">1 · 1 = 1</small>':`Silêncio<br><small style="font:600 15px Instrument Sans">${ign} · ${cin} = 0</small>`;
+}
+$('#alsw').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.k==='i')ign=1-ign;else cin=1-cin;drawAl();$(`#alsw [data-k="${b.dataset.k}"]`).focus()});drawAl();
+
+/* 7 portas */
+const G7={
+ AND:{f:(a,b)=>a&b,exp:'S = A · B',r:'Saída 1 só se TODAS as entradas forem 1.',ex:'Só vou pra prova se a aula não for cancelada E eu tiver estudado tudo.'},
+ NAND:{f:(a,b)=>1-(a&b),exp:'S = NOT(A · B)',r:'O inverso da AND: só dá 0 quando TODAS as entradas são 1.',ex:'O aviso “tá faltando coisa!” só apaga (0) quando a aula está confirmada E eu estudei tudo. Faltou qualquer um, ele acende (1).'},
+ OR:{f:(a,b)=>a|b,exp:'S = A + B',r:'Saída 1 se PELO MENOS UMA entrada for 1.',ex:'Vou pra prova tranquilo se eu tiver estudado OU se tiver lido o resumo da monitoria (ou os dois).'},
+ NOR:{f:(a,b)=>1-(a|b),exp:'S = NOT(A + B)',r:'O inverso da OR: só dá 1 quando TODAS as entradas são 0.',ex:'Fico de boa em casa (1) só se NÃO tem prova E NÃO tem trabalho. Apareceu qualquer um, acabou a paz (0).'},
+ NOT:{f:a=>1-a,exp:'S = Ā',r:'Inverte a entrada: 1 vira 0 e 0 vira 1.',ex:'Entrada: eu vou pra prova (1). Saída: não vou pra prova (0).'},
+ XOR:{f:(a,b)=>a^b,exp:'S = A ⊕ B',r:'Saída 1 se as entradas forem DIFERENTES (uma 0 e outra 1).',ex:'Hoje ou eu vou pra prova ou eu vou pro Big Joe: só pode ser um ou o outro.'},
+ XNOR:{f:(a,b)=>1-(a^b),exp:'S = NOT(A ⊕ B)',r:'Coincidência: saída 1 se as entradas forem IGUAIS (as duas 0 ou as duas 1).',ex:'Eu me dou bem se levo guarda-chuva e chove, ou se não levo e não chove.'}
+};
+let g7='NAND',A7=0,B7=0;
+function gsym(g,a,b,s){
+ let h='';const bub=/^N|XNOR/.test(g);
+ if(g==='NOT'){h+=L(14,60,60,60,a)+L(142,60,198,60,s)+`<path class="body" d="M60 25L130 60L60 95Z"/><circle class="body" cx="136" cy="60" r="6"/><text class="lbl" x="2" y="54">A</text>`}
+ else{const isA=g==='AND'||g==='NAND',isX=/XN?OR/.test(g),x=isA?60:66,ox=(isA?140:148)+(bub?12:0);
+  h+=L(14,40,x,40,a)+L(14,80,x,80,b)+L(ox,60,198,60,s);
+  h+=isA?'<path class="body" d="M60 20H100A40 40 0 0 1 100 100H60Z"/>':'<path class="body" d="M52 20Q100 20 148 60Q100 100 52 100Q72 60 52 20Z"/>';
+  if(isX)h+='<path d="M40 20Q60 60 40 100" fill="none" stroke="var(--ink)" stroke-width="3.5"/>';
+  if(bub)h+=`<circle class="body" cx="${isA?146:154}" cy="60" r="6"/>`;
+  h+='<text class="lbl" x="2" y="34">A</text><text class="lbl" x="2" y="74">B</text>'}
+ h+=`<circle cx="205" cy="60" r="9" fill="${s?'var(--acc)':'var(--bg)'}" stroke="var(--ink)" stroke-width="3"/><text class="lbl" x="196" y="40">S</text>`;
+ return h;
+}
+function drawG7(){
+ const g=G7[g7],s=g.f(A7,B7);
+ $('#g7sel').innerHTML=Object.keys(G7).map(k=>`<button data-g="${k}" aria-pressed="${k===g7}">${k}</button>`).join('');
+ $('#g7sw').innerHTML=`<button data-s="A" class="${A7?'on':''}" aria-pressed="${!!A7}">A = ${A7}</button>`+(g7==='NOT'?'':`<button data-s="B" class="${B7?'on':''}" aria-pressed="${!!B7}">B = ${B7}</button>`);
+ $('#g7out').textContent=s;$('#g7out').style.color=s?'var(--acct)':'';
+ $('#g7log').textContent=g.r;$('#g7ex').innerHTML='<b>Exemplo:</b> '+esc(g.ex);$('#g7exp').textContent=g.exp;
+ const rows=g7==='NOT'?[[0],[1]]:[[0,0],[0,1],[1,0],[1,1]];
+ $('#g7th').innerHTML=`<tr>${g7==='NOT'?'<th>A</th>':'<th>A</th><th>B</th>'}<th>S</th></tr>`;
+ $('#g7tb').innerHTML=rows.map(r=>{const hl=r[0]===A7&&(g7==='NOT'||r[1]===B7);return `<tr class="${hl?'hl':''}">${r.map(v=>`<td>${v}</td>`).join('')}<td>${g.f(r[0],r[1])}</td></tr>`}).join('');
+ $('#g7sym').innerHTML=gsym(g7,A7,B7,s);
+}
+$('#g7sel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g7=b.dataset.g;drawG7();$(`#g7sel [data-g="${g7}"]`).focus()});
+$('#g7sw').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s==='A')A7=1-A7;else B7=1-B7;drawG7();$(`#g7sw [data-s="${b.dataset.s}"]`).focus()});
+drawG7();
+
+/* chips TTL/CMOS */
+const CH=[['NAND','4 portas NAND','7400','4011'],['NOR','4 portas NOR','7402','4001'],['NOT','6 portas NOT (inversor)','7404','4009'],['AND','4 portas AND','7408','4081'],['OR','4 portas OR','7432','4071'],['XOR','4 portas XOR','7486','4030']];
+let fam='TTL',chi=3;
+function dip(code,f){let h='';for(let i=0;i<7;i++){h+=`<rect x="${52+i*32}" y="14" width="14" height="18" rx="2" fill="var(--off)"/><rect x="${52+i*32}" y="118" width="14" height="18" rx="2" fill="var(--off)"/>`}
+ h+=`<rect x="34" y="30" width="232" height="90" rx="8" fill="var(--ink)"/><path d="M34 63a12 12 0 0 1 0 24" fill="var(--bg)"/><circle cx="56" cy="104" r="5" fill="var(--bg)" opacity=".6"/>`;
+ h+=`<text x="150" y="80" text-anchor="middle" font-family="Sofia Sans Condensed,sans-serif" font-weight="800" font-size="34" fill="var(--bg)">${esc(code)}</text><text x="150" y="104" text-anchor="middle" font-family="Instrument Sans,sans-serif" font-weight="700" font-size="14" fill="var(--acc)">${esc(f)}</text>`;
+ $('#dip').innerHTML=h}
+function drawChip(){
+ $('#famsel').innerHTML=['TTL','CMOS'].map(f=>`<button data-f="${f}" aria-pressed="${f===fam}">${f} · ${f==='TTL'?'74…':'40…'}</button>`).join('');
+ $('#chipsel').innerHTML=CH.map((c,i)=>`<button data-i="${i}" aria-pressed="${i===chi}">${c[0]}</button>`).join('');
+ const c=CH[chi],code=fam==='TTL'?c[2]:c[3];dip(code,fam);
+ $('#dipinfo').textContent=`Família ${fam} · ${c[1]} · código ${code}`;
+}
+$('#famsel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fam=b.dataset.f;$('#cerr').textContent='';drawChip()});
+$('#chipsel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;chi=+b.dataset.i;$('#cerr').textContent='';drawChip()});
+function ident(raw){const v=raw.toUpperCase().replace(/[\s-]/g,'');
+ if(!v)return {err:'Digite um código primeiro.'};
+ let m=v.match(/^(?:SN)?74([A-Z]*)(\d{2,3})$/);
+ if(m){const num='74'+m[2],c=CH.find(x=>x[2]===num),vr=m[1];let f='TTL',note='';
+  if(vr==='HC'){f='CMOS';note='variante HC (CMOS de alta velocidade) com a mesma pinagem do '+num}
+  else if(vr==='HCT'){f='CMOS';note='variante HCT (CMOS compatível com TTL)'}
+  else if(vr==='LS')note='variante LS, a mais comum';else if(vr==='L')note='variante L, de baixo consumo';else if(vr==='S')note='variante S, rápida';else if(vr)note='variante '+vr;
+  return {code:v,f,c,note}}
+ m=v.match(/^(?:CD)?(40\d{2})[A-Z]*$/);
+ if(m)return {code:m[1],f:'CMOS',c:CH.find(x=>x[3]===m[1]),note:''};
+ if(/^\d+$/.test(v))return {err:'Não reconheci: código TTL começa com 74 e CMOS com 40.'};
+ return {err:'Use o formato do código do chip, ex.: 7408, 74LS08 ou 4081.'};
+}
+$('#cform').addEventListener('submit',e=>{e.preventDefault();const r=ident($('#cin').value);
+ if(r.err){$('#cerr').textContent=r.err;return}
+ $('#cerr').textContent='';dip(r.code,r.f);
+ if(r.c){fam=r.f;chi=CH.indexOf(r.c);$('#famsel').innerHTML=['TTL','CMOS'].map(f=>`<button data-f="${f}" aria-pressed="${f===fam}">${f} · ${f==='TTL'?'74…':'40…'}</button>`).join('');$('#chipsel').innerHTML=CH.map((c,i)=>`<button data-i="${i}" aria-pressed="${i===chi}">${c[0]}</button>`).join('')}
+ $('#dipinfo').textContent=`Família ${r.f}${r.note?' ('+r.note+')':''} · ${r.c?r.c[1]:'esse código não está na tabela da aula'}`;
+});
+$('#ctab').innerHTML=CH.map(c=>`<tr><td>${c[1]}</td><td><b>${c[2]}</b></td><td><b>${c[3]}</b></td></tr>`).join('');
+$('#lvls').innerHTML=[['SSI','Pequena escala: menos de 12 portas. São os chips da tabela acima.',8],['MSI','Média escala: menos de 100 portas. Ex.: somadores.',26],['LSI','Larga escala: milhares de portas. Ex.: processadores antigos.',62],['VLSI','Muito larga escala: muitos milhares. Ex.: microprocessadores modernos.',100]].map(([n,d,w])=>`<div class="lvl"><b>${n}</b><div class="lb"><i style="width:${w}%"></i></div><p>${d}</p></div>`).join('');
+drawChip();
+
+/* CPU */
+const CPU={uc:['UC','Unidade de Controle','É o componente mais complexo da CPU. Controla e comanda todo o processamento: diz aos outros componentes, como a ULA, o que fazer e quando.'],
+ ula:['ULA','Unidade Lógica e Aritmética','É quem realmente processa os dados: executa as operações matemáticas (soma, subtração) e lógicas (AND, OR).'],
+ reg:['REG','Registradores','Pequenas porções de memória dentro da CPU que guardam temporariamente dados, instruções ou resultados. São voláteis e feitos de semicondutor. Ficam no topo da hierarquia de memória.'],
+ clk:['CLOCK','O baterista','Gera pulsos constantes que marcam o ritmo do trabalho. A cada batida, a CPU executa uma ou mais pequenas operações. A frequência (em Hz) é o número de batidas por segundo.'],
+ bus:['Barramentos','As avenidas','Conectam tudo dentro da CPU e ligam a CPU ao resto do sistema.<ul class="clean"><li><b>Dados:</b> transporta os dados. Bidirecional (vai e volta).</li><li><b>Endereços:</b> diz onde o dado deve ser pego ou guardado. Unidirecional (só vai).</li><li><b>Controle:</b> sinais como “leia agora” e “escreva agora”. Bidirecional.</li></ul><p style="margin:8px 0 0;color:var(--mute)">Também existem os barramentos elétricos, mas esses não vão cair.</p>']};
+let ck='uc';
+function drawCpu(){
+ $('#cpu').innerHTML=['uc','ula','reg','clk'].map(k=>`<button class="blk" data-k="${k}" aria-pressed="${k===ck}">${CPU[k][0]}<small>${CPU[k][1]}</small></button>`).join('');
+ document.querySelector('.busrow').setAttribute('aria-pressed',ck==='bus');
+ const c=CPU[ck];$('#cpud').innerHTML=`<h3>${c[0]} · ${c[1]}</h3><div>${c[2]}</div>`;
+}
+document.querySelector('#p2-cpu .cpuw').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;ck=b.dataset.k;drawCpu();const f=document.querySelector(`#p2-cpu [data-k="${ck}"]`);if(f)f.focus()});
+drawCpu();
+function drawHz(){const g=+$('#ghz').value,gs=String(g).replace('.',',');
+ $('#ghzv').textContent=gs+' GHz';$('#ghzt').textContent=`${gs} GHz = ${gs} bilhões de batidas por segundo.`;
+ const n=Math.round(g*2),w=400/n;let d='M0 50';for(let i=0;i<n;i++){const x=i*w;d+=`L${x} 50L${x} 10L${x+w/2} 10L${x+w/2} 50`}d+='L400 50';
+ $('#wave').innerHTML=`<path d="${d}" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linejoin="round"/>`}
+$('#ghz').addEventListener('input',drawHz);drawHz();
+
+/* memória P2 */
+$('#pyr2').innerHTML=[['Registradores','Dentro da CPU. Os mais rápidos.',34],['Cache L1 · L2 · L3','Entre a CPU e a RAM. Guarda o que é usado com mais frequência: é a mesa de bancada para não precisar ir ao depósito.',54],['Memória principal (RAM)','Onde programas e dados ficam enquanto estão sendo executados.',74],['Secundária: HD, SSD, CD-ROM','Armazenamento permanente (não volátil) de dados e programas.',96]].map(([n,d,w],i)=>`<div><b style="width:${w}%;background:color-mix(in srgb,var(--acc) ${100-i*22}%,var(--bg))">${n}</b><span>${d}</span></div>`).join('');
+const VOL=[['Registradores','v'],['Cache','v'],['RAM','v'],['HD, SSD, CD-ROM','p']];let vans={};
+function drawVol(){
+ $('#volg').innerHTML=VOL.map(([n,a],i)=>{const r=vans[i];return `<div class="volr"><span style="font-weight:600">${n}</span><div class="seg"><button data-i="${i}" data-v="v" aria-pressed="${r==='v'}">Volátil</button><button data-i="${i}" data-v="p" aria-pressed="${r==='p'}">Permanente</button></div>${r?`<span class="res" style="color:${r===a?'var(--ok)':'var(--acct)'}">${r===a?'Certo!':'Não: '+(a==='v'?'perde os dados quando desliga.':'guarda mesmo desligado.')}</span>`:''}</div>`}).join('');
+ const ok=VOL.filter((x,i)=>vans[i]===x[1]).length,done=Object.keys(vans).length;
+ $('#volst').textContent=done===VOL.length?`${ok} de ${VOL.length} certas.`:'';
+}
+$('#volg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;vans[b.dataset.i]=b.dataset.v;drawVol()});drawVol();
+
+/* E/S com buffer */
+let iom='int',ibuf=[],idir=[],iprn='',iwork=0,iw0=0,itm=null,itk=0;
+function ioDraw(){
+ const blocked=idir.length>0;const c=$('#iocpu');c.classList.toggle('busy',blocked);
+ c.querySelector('span').innerHTML=(blocked?'Travada esperando a impressora…':'Livre, trabalhando em outras coisas')+`<br>${iwork} tarefas feitas`;
+ $('#iobuf').innerHTML=Array.from({length:8},(_,i)=>`<i class="${ibuf[i]?'f':''}">${ibuf[i]||''}</i>`).join('');
+ $('#iobuf').parentElement.style.opacity=iom==='int'?1:.35;
+ $('#ioprn').textContent=iprn||'—';
+}
+function ioStop(){clearInterval(itm);itm=null}
+function ioTick(){itk++;
+ if(!idir.length)iwork++;
+ if(itk%2===0){const src=iom==='int'?ibuf:idir;if(src.length)iprn+=src.shift()}
+ if(!ibuf.length&&!idir.length){ioStop();$('#iost').textContent=iom==='int'?`Impressão concluída. Enquanto a impressora trabalhava, a CPU fez ${iwork-iw0} outras tarefas.`:'Impressão concluída. A CPU ficou travada esse tempo todo, sem fazer mais nada.'}
+ ioDraw();
+}
+$('#iosend').addEventListener('click',()=>{const M='OLA!'.split('');
+ if(iom==='int'){if(ibuf.length+M.length>8){$('#iost').textContent='Buffer cheio! Espere a impressora esvaziar um pouco.';return}ibuf.push(...M);$('#iost').textContent='A CPU entregou os 4 caracteres à interface num instante e voltou ao trabalho.'}
+ else{idir.push(...M);$('#iost').textContent='Sem interface, a CPU fica parada esperando a impressora, letra por letra.'}
+ iw0=iwork;if(!itm)itm=setInterval(ioTick,matchMedia('(prefers-reduced-motion:reduce)').matches?700:380);ioDraw()});
+function ioReset(){ioStop();ibuf=[];idir=[];iprn='';iwork=0;itk=0;$('#iost').textContent='';ioDraw()}
+$('#ioreset').addEventListener('click',ioReset);
+$('#iomode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;iom=b.dataset.m;document.querySelectorAll('#iomode button').forEach(x=>x.setAttribute('aria-pressed',x===b));ioReset()});
+ioDraw();
+
+/* paralelo x serial */
+const BY='01101001';let pt=0,pstm=null;
+function psDraw(){
+ $('#wpar').innerHTML=[...BY].map(b=>`<div class="wire${pt>=1?' live':''}"><span class="s">${pt>=1?'':b}</span><i></i><span class="d">${pt>=1?b:''}</span></div>`).join('');
+ $('#wser').innerHTML=`<div class="wire${pt>0&&pt<=8?' live':''}"><span class="s">${BY.slice(pt)}</span><i></i><span class="d">${BY.slice(0,pt)}</span></div>`;
+ $('#pstick').textContent=pt?`tique ${pt}`:'';
+ $('#psst').textContent=pt===0?'Toque em Enviar e compare.':`Paralelo: o byte inteiro chegou no tique 1. Serial: ${pt} de 8 bits${pt>=8?', completo só no tique 8.':'…'}`;
+}
+$('#pssend').addEventListener('click',()=>{clearInterval(pstm);pt=0;psDraw();pstm=setInterval(()=>{pt++;psDraw();if(pt>=8)clearInterval(pstm)},matchMedia('(prefers-reduced-motion:reduce)').matches?900:480)});
+psDraw();
+
+/* duplex */
+const DX={simplex:['Simplex','Estação','Sua casa','Rua de mão única: a comunicação só vai num sentido. Ex.: rádio e TV.'],half:['Half-duplex','Você','Amigo','Mão dupla com ponte estreita: vai nos dois sentidos, mas um de cada vez. Ex.: walkie-talkie.'],full:['Full-duplex','Você','Amigo','Avenida de mão dupla: os dois sentidos ao mesmo tempo. Ex.: ligação de telefone.']};
+let dx='simplex',dab=0,dba=0;
+function arrow(x1,x2,y,st,none){const c=st===1?'var(--acc)':st===2?'var(--ink)':'var(--off)',dir=x2>x1?1:-1;
+ return `<path d="M${x1} ${y}H${x2-dir*10}" stroke="${c}" stroke-width="${st===1?5:3}" fill="none" ${st===2||none?'stroke-dasharray="6 6"':''} opacity="${none&&!st?.4:1}"/><path d="M${x2} ${y}l${-dir*14} -8v16z" fill="${c}" opacity="${none&&!st?.4:1}"/>${st===2?`<text x="160" y="${y+6}" text-anchor="middle" font-family="Sofia Sans Condensed" font-weight="800" font-size="26" fill="var(--acct)">✕</text>`:''}`}
+function drawDx(){const d=DX[dx];
+ $('#dxsel').innerHTML=Object.keys(DX).map(k=>`<button data-m="${k}" aria-pressed="${k===dx}">${DX[k][0]}</button>`).join('');
+ $('#dxdesc').textContent=d[3];$('#dxa').textContent=d[1]+' transmite';$('#dxb').textContent=d[2]+' transmite';
+ $('#dxsvg').innerHTML=`<rect x="6" y="28" width="84" height="64" rx="12" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/><text x="48" y="66" text-anchor="middle" class="lbl">A · ${d[1]}</text><rect x="230" y="28" width="84" height="64" rx="12" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/><text x="272" y="66" text-anchor="middle" class="lbl">B · ${d[2]}</text>`+arrow(96,224,46,dab)+arrow(224,96,76,dba,dx==='simplex');
+}
+document.querySelector('#p2-tx .lab').addEventListener('click',e=>{const b=e.target.closest('[data-dx]');if(!b)return;const k=b.dataset.dx;let m='';dab=0;dba=0;
+ if(dx==='simplex'){if(k!=='b')dab=1;if(k!=='a')dba=2;m=k==='a'?'A estação transmite e a sua casa recebe.':k==='b'?'Não dá: é mão única. Sua casa não consegue mandar nada de volta por esse caminho.':'Só o sentido A → B funciona. O caminho de volta não existe.'}
+ else if(dx==='half'){if(k==='ab'){dab=2;dba=2;m='Conflito! No half-duplex só um transmite por vez: a ponte é estreita.'}else{k==='a'?dab=1:dba=1;m=k==='a'?'Você fala e seu amigo escuta.':'Agora seu amigo fala e você escuta.'}}
+ else{if(k!=='b')dab=1;if(k!=='a')dba=1;m=k==='ab'?'Os dois falam e ouvem ao mesmo tempo, como numa ligação.':'Funciona, e o outro lado pode responder na mesma hora.'}
+ $('#dxst').textContent=m;drawDx()});
+$('#dxsel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;dx=b.dataset.m;dab=0;dba=0;$('#dxst').textContent='';drawDx()});
+drawDx();
+
 /* ---------- quiz ---------- */
-const TP={ger:'Gerações',bin:'Binário',port:'Portas lógicas',des:'Desempenho',mem:'Memória',isa:'CISC × RISC',cir:'Circuitos e barramentos'};
+const TP={ger:'Gerações',bin:'Binário',port:'Portas lógicas',des:'Desempenho',mem:'Memória',isa:'CISC × RISC',cir:'Circuitos e barramentos',boo:'Boole e portas',fam:'TTL × CMOS',cpu:'CPU',isa2:'CISC × RISC (P2)',mem2:'Memória (P2)',es:'Entrada e saída',tx:'Transmissão'};
 const PIPE=['Busca da instrução','Decodificação','Endereço do operando','Busca do operando','Execução','Escrita do resultado'];
 const Q=[
  {id:'g1',tp:'ger',t:'mc',q:'O que define a “geração” de um computador?',o:['O componente eletrônico principal da época','A linguagem de programação mais usada','A quantidade de memória RAM','O sistema operacional'],a:0,h:'Pense no que muda de uma geração para outra: válvula, transistor, chip…',e:'Cada geração é definida pelo componente principal: relés → válvulas → transistores → circuitos integrados → VLSI.'},
@@ -644,19 +1075,73 @@ const Q=[
  {id:'c4',tp:'cir',t:'tf',q:'Um barramento de 64 bits transporta 64 bits de uma vez, e por isso a largura influencia o desempenho.',a:0,h:'Largura = número de pistas.',e:'Verdadeiro: mais pistas, mais dados ao mesmo tempo.'},
  {id:'c5',tp:'cir',t:'tf',q:'O barramento de dados é de mão única: a CPU só envia dados.',a:1,h:'A CPU lê E escreve na memória.',e:'Falso: o de dados é de mão dupla. Quem costuma ser de mão única é o de endereços.'}
 ];
-const GF={AND:(a,b)=>a&b,OR:(a,b)=>a|b};const TR=[[0,0],[0,1],[1,0],[1,1]];
+Q.forEach(q=>q.pv='p1');
+Q.push(
+ {id:'x1',tp:'boo',t:'mc',q:'Qual porta dá saída 1 só quando as entradas são diferentes?',o:['XOR','XNOR','NAND','AND'],a:0,h:'É o “ou exclusivo”: um ou o outro, nunca os dois.',e:'XOR: 1 quando uma entrada é 0 e a outra é 1.'},
+ {id:'x2',tp:'boo',t:'mc',q:'A porta NAND só dá 0 quando…',o:['todas as entradas são 1','todas as entradas são 0','as entradas são diferentes','qualquer entrada é 1'],a:0,h:'Ela é o inverso da AND.',e:'NAND = NOT(AND). A AND só dá 1 com tudo 1, então a NAND só dá 0 com tudo 1.'},
+ {id:'x3',tp:'boo',t:'mc',q:'A porta NOR só dá 1 quando…',o:['todas as entradas são 0','todas as entradas são 1','pelo menos uma entrada é 1','as entradas são iguais'],a:0,h:'Ela é o inverso da OR.',e:'NOR = NOT(OR). A OR só dá 0 com tudo 0, então a NOR só dá 1 com tudo 0.'},
+ {id:'x4',tp:'boo',t:'table',g:'XOR',q:'Complete a tabela-verdade da porta XOR.',h:'1 quando as entradas são diferentes.',e:'XOR: 0 0 → 0, 0 1 → 1, 1 0 → 1, 1 1 → 0.'},
+ {id:'x5',tp:'boo',t:'table',g:'NAND',q:'Complete a tabela-verdade da porta NAND.',h:'Faça a AND e inverta cada resultado.',e:'NAND: só a última linha (1 1) dá 0.'},
+ {id:'x6',tp:'boo',t:'table',g:'NOR',q:'Complete a tabela-verdade da porta NOR.',h:'Faça a OR e inverta cada resultado.',e:'NOR: só a primeira linha (0 0) dá 1.'},
+ {id:'x7',tp:'boo',t:'bit',q:'Qual a saída da XNOR com A = 1 e B = 1?',a:1,h:'XNOR é a “coincidência”: entradas iguais…',e:'Entradas iguais → XNOR dá 1.'},
+ {id:'x8',tp:'boo',t:'bit',q:'Qual a saída de S = (A NAND B) XOR C, com A = 1, B = 1 e C = 1?',a:1,h:'Resolva o NAND primeiro.',e:'1 NAND 1 = 0; depois 0 XOR 1 = 1.'},
+ {id:'x9',tp:'boo',t:'order',q:'Coloque na ordem os passos de usar a Álgebra de Boole no hardware.',items:['Expressar a ideia como frase lógica','Simplificar a expressão','Transformar em circuito com portas lógicas'],h:'Primeiro a frase, por último o circuito.',e:'Expressar → simplificar → transformar em circuito.'},
+ {id:'x10',tp:'boo',t:'mc',q:'“O alarme toca SE a ignição estiver ligada E o cinto estiver solto.” Qual porta liga as duas condições?',o:['AND','OR','XOR','NOR'],a:0,h:'As duas condições precisam ser verdade juntas.',e:'AND: alarme = ignição · cinto solto.'},
+ {id:'x11',tp:'boo',t:'mc',q:'“Me dou bem se levo guarda-chuva e chove, ou se não levo e não chove.” Qual porta é essa?',o:['XNOR','XOR','NAND','OR'],a:0,h:'A saída é 1 quando as duas coisas são iguais.',e:'XNOR (coincidência): 1 quando as entradas são iguais.'},
+ {id:'f1',tp:'fam',t:'mc',q:'Que tipo de transistor a família TTL usa?',o:['Bipolar','MOSFET','Válvula a vácuo','Relé'],a:0,h:'É o tipo mais básico, conduz com dois tipos de carga.',e:'TTL usa transistores bipolares. CMOS usa MOSFET.'},
+ {id:'f2',tp:'fam',t:'mc',q:'Qual a principal vantagem da família CMOS?',o:['Consome muito menos energia','É centrada em 5 V','Só funciona com 0,8 V','Não precisa de chip'],a:0,h:'MOSFET não gasta energia para ficar ligado.',e:'Consumo baixíssimo: os MOSFETs são ativados só por tensão.'},
+ {id:'f3',tp:'fam',t:'mc',q:'Em que faixa de tensão a CMOS pode operar?',o:['3 V a 18 V','Só em 5 V','0 V a 0,8 V','2 V a 5 V'],a:0,h:'É bem flexível, bem mais que a TTL.',e:'CMOS: de 3 V a 18 V.'},
+ {id:'f4',tp:'fam',t:'mc',q:'Na TTL, qual faixa de tensão representa o nível lógico 0?',o:['0 V a 0,8 V','2 V a 5 V','3 V a 18 V','5 V a 12 V'],a:0,h:'É a faixa mais baixa.',e:'TTL: 0 = 0 a 0,8 V; 1 = 2 a 5 V.'},
+ {id:'f5',tp:'fam',t:'mc',q:'Um chip com o código 7408 é…',o:['TTL com 4 portas AND','CMOS com 4 portas AND','TTL com 6 portas NOT','CMOS com 4 portas NOR'],a:0,h:'74… é qual família? E o 08?',e:'74 = TTL; 7408 = 4 portas AND (em CMOS seria o 4081).'},
+ {id:'f6',tp:'fam',t:'mc',q:'E o chip 4001?',o:['CMOS com 4 portas NOR','TTL com 4 portas NAND','CMOS com 4 portas AND','TTL com 4 portas NOR'],a:0,h:'40… é qual família?',e:'40 = CMOS; 4001 = 4 portas NOR (em TTL seria o 7402).'},
+ {id:'f7',tp:'fam',t:'dec',q:'Qual o código TTL do chip com 6 portas NOT (inversores)?',a:7404,h:'Começa com 74 e o final é 04.',e:'7404 (em CMOS, 4009).'},
+ {id:'f8',tp:'fam',t:'mc',q:'Qual variante CMOS é compatível para funcionar junto com chips TTL?',o:['HCT','HC','LS','S'],a:0,h:'Tem um T de TTL no nome.',e:'HCT. A HC é a CMOS de alta velocidade; L, S e LS são variantes da TTL.'},
+ {id:'f9',tp:'fam',t:'mc',q:'Um somador costuma ser um CI de qual nível de integração?',o:['MSI','SSI','LSI','VLSI'],a:0,h:'Menos de 100 portas.',e:'MSI (média escala, menos de 100 portas). SSI tem menos de 12.'},
+ {id:'f10',tp:'fam',t:'tf',q:'Microcontroladores e lógica moderna são quase exclusivamente CMOS.',a:0,h:'Pense em baixo consumo e baixa tensão.',e:'Verdadeiro: baixa potência e baixa tensão.'},
+ {id:'f11',tp:'fam',t:'mc',q:'Qual a variante TTL mais comum?',o:['LS','L','S','HC'],a:0,h:'Junta as letras de duas outras variantes.',e:'LS. L é baixo consumo, S é rápida; HC é CMOS.'},
+ {id:'u1',tp:'cpu',t:'mc',q:'Qual é o componente mais complexo da CPU, que controla e comanda todo o processamento?',o:['UC (Unidade de Controle)','ULA','Registradores','Barramento de dados'],a:0,h:'Ela dá ordens até para a ULA.',e:'A UC controla as ações dos outros componentes.'},
+ {id:'u2',tp:'cpu',t:'mc',q:'Quem realmente executa as operações matemáticas e lógicas?',o:['ULA','UC','Clock','Registradores'],a:0,h:'Unidade Lógica e…',e:'A ULA faz soma, subtração, AND, OR…'},
+ {id:'u3',tp:'cpu',t:'mc',q:'Os registradores são…',o:['pequenas memórias voláteis dentro da CPU','memórias permanentes como o SSD','os fios que ligam a CPU à RAM','o relógio da CPU'],a:0,h:'Guardam dados temporariamente.',e:'Pequenas porções de memória dentro da CPU, voláteis, de semicondutor.'},
+ {id:'u4',tp:'cpu',t:'mc',q:'Qual barramento é unidirecional (só vai)?',o:['Endereços','Dados','Controle','Todos'],a:0,h:'É o que diz ONDE o dado está.',e:'Endereços é unidirecional; dados e controle são bidirecionais.'},
+ {id:'u5',tp:'cpu',t:'tf',q:'Segundo o resumo, o barramento de controle é bidirecional.',a:0,h:'Pense nos sinais de leitura e escrita indo e vindo.',e:'Verdadeiro. Unidirecional é só o de endereços.'},
+ {id:'u6',tp:'cpu',t:'mc',q:'Um processador de 3 GHz dá quantas batidas de clock por segundo?',o:['3 bilhões','3 milhões','3 mil','300'],a:0,h:'Giga = bilhão.',e:'3 GHz = 3 bilhões de ciclos por segundo.'},
+ {id:'u7',tp:'cpu',t:'mc',q:'Em que unidade se mede a frequência do clock?',o:['Hertz (Hz)','Bits','Volts','Bytes por segundo'],a:0,h:'GHz…',e:'Hertz: ciclos (batidas) por segundo.'},
+ {id:'r1',tp:'isa2',t:'mc',q:'Uma instrução que carrega A, carrega B, faz a operação e guarda o resultado, tudo de uma vez, é típica de…',o:['CISC','RISC','Pipeline','Superescalar'],a:0,h:'É a instrução “rica” do robô especialista.',e:'CISC: uma instrução complexa traduzida pelo microcódigo.'},
+ {id:'r2',tp:'isa2',t:'mc',q:'No RISC, quem fica com o trabalho de quebrar uma tarefa complexa em passos simples?',o:['O compilador','O microcódigo','A ULA','O clock'],a:0,h:'RISC não tem microprogramação.',e:'O compilador gera as várias instruções simples.'},
+ {id:'r3',tp:'isa2',t:'mc',q:'Qual é a desvantagem do RISC?',o:['O programa fica com muito mais instruções','O hardware é muito complexo','Cada instrução leva vários ciclos','Não funciona com pipeline'],a:0,h:'Carregue, carregue, some, guarde…',e:'Código mais longo: a mesma tarefa precisa de mais instruções.'},
+ {id:'r4',tp:'isa2',t:'mc',q:'Por que processadores ARM (RISC) dominam celulares?',o:['São mais simples e consomem menos energia','Têm microcódigo mais rico','São mais fáceis de programar à mão','Usam válvulas'],a:0,h:'Pense na bateria.',e:'Simples e econômicos: ideal para dispositivos móveis.'},
+ {id:'n1',tp:'mem2',t:'mc',q:'Quais são as duas operações básicas da memória?',o:['Escrita e leitura','Soma e subtração','Busca e decodificação','Entrada e saída'],a:0,h:'Guardar e recuperar.',e:'Escrita (guardar) e leitura (recuperar).'},
+ {id:'n2',tp:'mem2',t:'mc',q:'Qual memória é usada para armazenamento permanente (não volátil)?',o:['Secundária (HD, SSD, CD-ROM)','RAM','Cache','Registradores'],a:0,h:'Fica na base da pirâmide.',e:'A memória secundária guarda dados e programas mesmo desligada.'},
+ {id:'n3',tp:'mem2',t:'mc',q:'Em quais níveis a memória cache costuma ser dividida?',o:['L1, L2 e L3','SSI, MSI e LSI','HC e HCT','RAM e ROM'],a:0,h:'L de level.',e:'Cache L1, L2 e L3.'},
+ {id:'n4',tp:'mem2',t:'tf',q:'A RAM é onde programas e dados ficam enquanto estão sendo executados.',a:0,h:'É a memória principal.',e:'Verdadeiro: é a memória básica do sistema.'},
+ {id:'e1',tp:'es',t:'mc',q:'Por que a CPU não fala direto com o periférico?',o:['Ficaria esperando o periférico lento e o computador travaria','Porque o periférico não usa binário','Porque a CPU não tem barramentos','Porque o periférico é mais rápido que a CPU'],a:0,h:'Pense na impressora lenta.',e:'A diferença de velocidade travaria tudo; por isso existe a interface de E/S.'},
+ {id:'e2',tp:'es',t:'mc',q:'Como se chama a memória temporária da interface de E/S?',o:['Buffer','Cache L3','Registrador','Microcódigo'],a:0,h:'Ela vai passando os dados no ritmo do periférico.',e:'Buffer.'},
+ {id:'e3',tp:'es',t:'mc',q:'Qual outro nome a interface de E/S recebe?',o:['Controladora ou adaptador','ULA','Unidade de controle','Barramento de endereços'],a:0,h:'Ex.: placa de vídeo, porta USB.',e:'Controladora ou adaptador.'},
+ {id:'e4',tp:'es',t:'mc',q:'Sobre a comunicação paralela, é correto dizer que…',o:['É rápida, mas só funciona bem em distâncias curtas','Manda um bit por vez num fio só','É a mais barata, com menos fios','É a usada pelo USB'],a:0,h:'Cabo grosso, vários fios.',e:'Vários bits ao mesmo tempo (rápida), mas para distâncias curtas.'},
+ {id:'e5',tp:'es',t:'mc',q:'O USB é um exemplo de comunicação…',o:['Serial','Paralela','Simplex','Assíncrona sem bits'],a:0,h:'O S de USB…',e:'Universal Serial Bus: serial moderna e rápida.'},
+ {id:'e6',tp:'es',t:'dec',q:'Na comunicação serial, quantos bits viajam um atrás do outro para mandar 1 byte?',a:8,h:'1 byte = ? bits.',e:'8 bits, um de cada vez, em fila.'},
+ {id:'e7',tp:'es',t:'mc',q:'Por que a serial é mais barata e funciona melhor em longas distâncias?',o:['Usa menos fios','Usa transistores MOSFET','Não precisa de interface','Manda o byte inteiro de uma vez'],a:0,h:'Compare a grossura dos cabos.',e:'Menos fios: cabo fino, mais barato e bom para distâncias longas.'},
+ {id:'t1',tp:'tx',t:'mc',q:'Qual transmissão usa bits de start e de stop?',o:['Assíncrona','Síncrona','Full-duplex','Paralela'],a:0,h:'O tempo entre caracteres não é fixo.',e:'Assíncrona: start e stop marcam onde cada caractere começa e termina.'},
+ {id:'t2',tp:'tx',t:'mc',q:'Por que a transmissão síncrona é mais eficiente?',o:['Usa um clock combinado e dispensa bits de start/stop','Usa mais fios','Manda caracteres em intervalos aleatórios','Só vai num sentido'],a:0,h:'A música com batida constante.',e:'Transmissor e receptor seguem o mesmo clock, sem bits extras.'},
+ {id:'t3',tp:'tx',t:'mc',q:'Um walkie-talkie é um exemplo de transmissão…',o:['Half-duplex','Simplex','Full-duplex','Síncrona'],a:0,h:'Dá para falar e ouvir, mas não ao mesmo tempo.',e:'Half-duplex: mão dupla, um de cada vez.'},
+ {id:'t4',tp:'tx',t:'mc',q:'Rádio e TV são exemplos de transmissão…',o:['Simplex','Half-duplex','Full-duplex','Serial'],a:0,h:'Você não consegue responder pela TV.',e:'Simplex: mão única.'},
+ {id:'t5',tp:'tx',t:'mc',q:'Uma ligação de telefone é um exemplo de transmissão…',o:['Full-duplex','Half-duplex','Simplex','Paralela'],a:0,h:'Os dois falam e ouvem ao mesmo tempo.',e:'Full-duplex: mão dupla ao mesmo tempo.'},
+ {id:'t6',tp:'tx',t:'dec',q:'Na assíncrona, com 1 bit de start e 1 de stop, quantos bits viajam para mandar um caractere de 8 bits?',a:10,h:'Some os bits extras ao caractere.',e:'1 + 8 + 1 = 10 bits, e só 8 são dado.'}
+);
+Q.forEach(q=>{q.pv=q.pv||'p2'});
+const GF={AND:(a,b)=>a&b,OR:(a,b)=>a|b,NAND:(a,b)=>1-(a&b),NOR:(a,b)=>1-(a|b),XOR:(a,b)=>a^b,XNOR:(a,b)=>1-(a^b)};const TR=[[0,0],[0,1],[1,0],[1,1]];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 Q.forEach(q=>{if(q.t==='mc')q.ord=shuf(q.o.map((x,i)=>i));if(q.t==='order')q.pool=shuf(q.items)});
 const KEY='aoc-p1-quiz-v1';let S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-let filt='all',list=[],qi=0,an=null;
+let filt='all',pv='p2',list=[],qi=0,an=null;
 const fresh=()=>({sel:null,v:'',ord:[],tab:[null,null,null,null],tries:0,msg:'',marks:null,wrong:false,showAns:false});
-function build(f){filt=f;list=Q.filter(q=>f==='all'||(f==='err'?S[q.id]==='err':q.tp===f));qi=list.findIndex(q=>!S[q.id]);if(qi<0)qi=list.length?0:0;an=fresh()}
+function build(f){filt=f;list=Q.filter(q=>(pv==='all'||q.pv===pv)&&(f==='all'||(f==='err'?S[q.id]==='err':q.tp===f)));qi=list.findIndex(q=>!S[q.id]);if(qi<0)qi=list.length?0:0;an=fresh()}
 const opts=q=>q.t==='tf'?['Verdadeiro','Falso']:q.o;
 function ansText(q){if(q.t==='mc'||q.t==='tf')return opts(q)[q.a];if(q.t==='order')return q.items.join(' → ');if(q.t==='table')return TR.map(r=>`${r[0]} ${r[1]} → ${GF[q.g](r[0],r[1])}`).join('; ');return String(q.a)}
 function validate(q){
  if(q.t==='mc'||q.t==='tf')return an.sel==null?'Escolha uma alternativa antes de verificar.':'';
- if(q.t==='order')return an.ord.length<6?`Faltam ${6-an.ord.length} etapa(s): toque em todas para montar a ordem.`:'';
+ if(q.t==='order')return an.ord.length<q.items.length?`Faltam ${q.items.length-an.ord.length} item(ns): toque em todas para montar a ordem.`:'';
  if(q.t==='table')return an.tab.includes(null)?'Preencha todas as linhas da tabela (toque no “?”).':'';
  const v=an.v.replace(/\s/g,'');
  if(v==='')return 'Digite sua resposta primeiro.';
@@ -680,16 +1165,17 @@ function body(q,locked){
    return `<button class="opt ${c}" data-act="sel" data-v="${oi}" aria-pressed="${an.sel===oi}" ${locked?'disabled':''}><span class="k">${'ABCD'[k]}</span><span>${esc(o[oi])}</span></button>`}).join('')}</div>`}
  if(q.t==='order'){
   const rem=q.pool.filter(x=>!an.ord.includes(x));const show=locked&&st==='err'?q.items:an.ord;
-  return `<div class="ordbox"><div class="slots">${[0,1,2,3,4,5].map(i=>{const x=show[i];const m=an.marks&&!locked?(an.marks[i]?'':' bad'):locked?' good':'';return `<button class="slot${x?' full':''}${x?m:''}" data-act="unord" data-i="${i}" ${locked||!x?'disabled':''} aria-label="posição ${i+1}${x?': '+esc(x)+', toque para remover':''}">${x?esc(x):'<span style="color:var(--mute)">toque numa etapa abaixo</span>'}</button>`}).join('')}</div>${locked?'':`<div class="pool">${rem.map(x=>`<button data-act="ord" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>`}</div>`}
+  return `<div class="ordbox"><div class="slots">${q.items.map((_,i)=>{const x=show[i];const m=an.marks&&!locked?(an.marks[i]?'':' bad'):locked?' good':'';return `<button class="slot${x?' full':''}${x?m:''}" data-act="unord" data-i="${i}" ${locked||!x?'disabled':''} aria-label="posição ${i+1}${x?': '+esc(x)+', toque para remover':''}">${x?esc(x):'<span style="color:var(--mute)">toque num item abaixo</span>'}</button>`}).join('')}</div>${locked?'':`<div class="pool">${rem.map(x=>`<button data-act="ord" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>`}</div>`}
  if(q.t==='table'){const vals=locked&&st==='err'?TR.map(r=>GF[q.g](r[0],r[1])):an.tab;
-  return `<table class="qt"><thead><tr><th>A</th><th>B</th><th>S = A ${q.g==='AND'?'·':'+'} B</th></tr></thead><tbody>${TR.map((r,i)=>{const m=locked?'good':an.marks?(an.marks[i]?'':'bad'):'';return `<tr class="${m}"><td>${r[0]}</td><td>${r[1]}</td><td><button data-act="tab" data-i="${i}" ${locked?'disabled':''} aria-label="saída para A=${r[0]} e B=${r[1]}: ${vals[i]==null?'vazio':vals[i]}">${vals[i]==null?'?':vals[i]}</button></td></tr>`}).join('')}</tbody></table>`}
+  return `<table class="qt"><thead><tr><th>A</th><th>B</th><th>S = A ${({AND:'·',OR:'+'})[q.g]||q.g} B</th></tr></thead><tbody>${TR.map((r,i)=>{const m=locked?'good':an.marks?(an.marks[i]?'':'bad'):'';return `<tr class="${m}"><td>${r[0]}</td><td>${r[1]}</td><td><button data-act="tab" data-i="${i}" ${locked?'disabled':''} aria-label="saída para A=${r[0]} e B=${r[1]}: ${vals[i]==null?'vazio':vals[i]}">${vals[i]==null?'?':vals[i]}</button></td></tr>`}).join('')}</tbody></table>`}
  const ph=q.t==='bin'?'ex.: 1010':q.t==='bit'?'0 ou 1':'número';
  const val=locked&&st==='err'?String(q.a):an.v;
  return `<div class="tin"><input id="qin" inputmode="numeric" autocomplete="off" placeholder="${ph}" value="${esc(val)}" class="${locked?'good':an.wrong?'bad':''}" ${locked?'disabled':''} aria-label="Sua resposta"></div>`;
 }
 function drawQ(){
  const n=list.length,answered=list.filter(q=>S[q.id]).length;
- $('#chips').innerHTML=[['all','Todas',Q.length],...Object.entries(TP).map(([k,v])=>[k,v,Q.filter(q=>q.tp===k).length]),['err','Meus erros',Q.filter(q=>S[q.id]==='err').length]].map(([k,v,c])=>`<button data-f="${k}" aria-pressed="${k===filt}">${v} · ${c}</button>`).join('');
+ const inPv=Q.filter(q=>pv==='all'||q.pv===pv);
+ $('#chips').innerHTML=`<div class="chips2 pvs">${[['p1','Prova 1'],['p2','Prova 2'],['all','P1 + P2']].map(([k,v])=>`<button data-pv="${k}" aria-pressed="${k===pv}">${v} · ${Q.filter(q=>k==='all'||q.pv===k).length}</button>`).join('')}</div><div class="chips2">`+[['all','Todas',inPv.length],...Object.entries(TP).map(([k,v])=>[k,v,inPv.filter(q=>q.tp===k).length]).filter(x=>x[2]),['err','Meus erros',inPv.filter(q=>S[q.id]==='err').length]].map(([k,v,c])=>`<button data-f="${k}" aria-pressed="${k===filt}">${v} · ${c}</button>`).join('')+'</div>';
  const ok1=list.filter(q=>S[q.id]==='ok1').length,ok2=list.filter(q=>S[q.id]==='ok2').length,er=list.filter(q=>S[q.id]==='err').length;
  $('#qsum').textContent=n?`${answered} de ${n} respondidas · ${ok1+ok2} certas · ${er} erradas`:'';
  $('#dots').innerHTML=list.map((q,i)=>`<button data-act="go" data-i="${i}" class="${S[q.id]||''}${i===qi?' cur':''}" aria-label="Questão ${i+1}${S[q.id]?', '+({ok1:'acertou de primeira',ok2:'acertou na segunda',err:'errou'})[S[q.id]]:''}">${i+1}</button>`).join('');
@@ -745,9 +1231,12 @@ box.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el&&
 box.addEventListener('input',e=>{if(e.target.id==='qin'){an.v=e.target.value;if(an.msg){an.msg='';box.querySelector('.msg').textContent=''}}});
 box.addEventListener('keydown',e=>{if(e.target.id==='qin'&&e.key==='Enter'){e.preventDefault();act('check')}});
 $('#dots').addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el)act('go',el)});
-$('#chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;build(b.dataset.f);drawQ()});
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.pv){pv=b.dataset.pv;build('all')}else build(b.dataset.f);drawQ()});
+document.querySelectorAll('[data-goquiz]').forEach(a=>a.addEventListener('click',()=>{pv=a.dataset.goquiz;build('all');drawQ()}));
+{const n1=Q.filter(q=>q.pv==='p1').length,n2=Q.length-n1;$('#qlead').textContent=`${Q.length} questões tiradas dos dois resumos: ${n1} da P1 e ${n2} da P2. Escolha a prova abaixo. Errou? Você ganha uma dica e mais uma chance antes de ver a resposta. Seu progresso fica salvo neste navegador.`;$('#tocq').textContent=`${Q.length} questões (${n1} da P1, ${n2} da P2) com correção, dica e resultado por assunto.`}
 $('#qreset').addEventListener('click',e=>{const b=e.currentTarget;if(b.dataset.c){S={};save();b.textContent='Apagar progresso';delete b.dataset.c;build('all');drawQ()}else{b.dataset.c=1;b.textContent='Toque de novo para confirmar';setTimeout(()=>{if(b.dataset.c){delete b.dataset.c;b.textContent='Apagar progresso'}},4000)}});
 build('all');drawQ();
+for(const t of document.querySelectorAll('table.stack')){const hs=[...t.rows[0].cells].map(c=>c.textContent);for(const r of [...t.rows].slice(1))[...r.cells].forEach((c,i)=>c.dataset.l=hs[i]||'')}
 }
 </script>
 </body>
